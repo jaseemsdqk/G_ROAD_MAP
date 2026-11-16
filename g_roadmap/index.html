@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission Google – 90 Day Software Engineer Roadmap</title>
+<meta name="description" content="A 90-day learning dashboard for Google Software Engineer interview preparation: daily planner, LeetCode tracker, CS tracker, projects and mock interview scorecards.">
+<style>
+:root{--bg:#0a0c10;--panel:#12161e;--panel2:#181d27;--border:#232a37;--border2:#2f384a;--text:#e7eaf0;--muted:#8d96a8;--accent:#7b8cff;--accent2:#5468ff;--good:#34c38f;--warn:#e6a93b;--bad:#ef6a5b;--radius:12px;--sidebar:262px;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+h1,h2,h3,h4{margin:0;line-height:1.25;letter-spacing:-.01em}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--accent2);color:#fff;padding:8px 12px;border-radius:8px;z-index:100}
+.skip:focus{left:8px}
+.muted{color:var(--muted)}.small{font-size:13px}.mono{font-family:var(--mono)}
+
+/* ---------- layout ---------- */
+.app{display:flex;min-height:100vh}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 14px;z-index:40;transition:transform .25s ease;overflow-y:auto}
+.brand{padding:4px 10px 18px}
+.brand b{display:block;font-size:16px;letter-spacing:.14em}
+.brand span{font-size:11px;color:var(--muted);letter-spacing:.06em}
+.nav{display:flex;flex-direction:column;gap:2px;flex:1}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--muted);font-weight:500;font-size:14px;text-decoration:none;transition:background .15s,color .15s}
+.nav a:hover{background:var(--panel2);color:var(--text)}
+.nav a[aria-current="page"]{background:rgba(123,140,255,.14);color:#fff}
+.nav a i{width:6px;height:6px;border-radius:50%;background:var(--border2);flex:none}
+.nav a[aria-current="page"] i{background:var(--accent)}
+.side-progress{margin:14px 6px 0;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--panel2)}
+.main-wrap{margin-left:var(--sidebar);flex:1;min-width:0}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 28px;background:rgba(10,12,16,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.topbar .grow{flex:1}
+.hamburger{display:none}
+.search-top{max-width:340px;width:100%}
+.chip{font-size:12px;padding:4px 10px;border:1px solid var(--border2);border-radius:999px;color:var(--muted);white-space:nowrap}
+main{padding:28px;max-width:1280px;margin:0 auto}
+.scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:35}
+.view{animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.view-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.view-head h2{font-size:24px}
+.view-head p{margin-top:4px}
+
+/* ---------- components ---------- */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.card h3{font-size:15px;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-top:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.stat .v{font-size:26px;font-weight:650;margin-top:4px;letter-spacing:-.02em}
+.stat .v.sm{font-size:16px;line-height:1.35;margin-top:8px}
+.stat .s{font-size:12px;color:var(--muted);margin-top:2px}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:26px;margin-bottom:16px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(135deg,#141a2b 0%,#10131b 60%)}
+.eyebrow{font-size:11px;letter-spacing:.2em;color:var(--accent);font-weight:600}
+.hero h1{font-size:clamp(28px,5vw,44px);letter-spacing:.06em;margin:6px 0}
+.tagline{color:var(--muted);letter-spacing:.14em;font-size:12px;font-weight:600}
+.ring{width:132px;height:132px;flex:none}
+.ring .t{font-size:26px;font-weight:700;fill:var(--text)}.ring .u{font-size:10px;fill:var(--muted);letter-spacing:.1em}
+.btn{appearance:none;border:1px solid var(--border2);background:var(--panel2);color:var(--text);font:inherit;font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;cursor:pointer;transition:background .15s,border-color .15s}
+.btn:hover{background:#202637;border-color:#3b4660}
+.btn.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}.btn.primary:hover{background:#6478ff}
+.btn.danger{color:#ffb4aa;border-color:#5a2a26;background:#2a1715}.btn.danger:hover{background:#38201c}
+.btn.ghost{background:transparent}
+.btn.sm{padding:4px 10px;font-size:12px}
+.link{background:none;border:0;color:var(--accent);cursor:pointer;font:inherit;font-size:12px;padding:0}
+input[type=text],input[type=search],input[type=date],input[type=number],select,textarea{font:inherit;font-size:14px;color:var(--text);background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;width:100%}
+textarea{min-height:76px;resize:vertical}
+input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent2);cursor:pointer;flex:none;margin:0}
+input[type=range]{accent-color:var(--accent2);width:100%}
+select{cursor:pointer}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.filters{display:grid;grid-template-columns:2fr repeat(auto-fit,minmax(130px,1fr));gap:12px;align-items:end;margin-bottom:14px}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid var(--border2);white-space:nowrap}
+.d-Easy{color:var(--good);border-color:rgba(52,195,143,.4)}.d-Medium{color:var(--warn);border-color:rgba(230,169,59,.4)}.d-Hard{color:var(--bad);border-color:rgba(239,106,91,.4)}
+.tag{font-size:11px;padding:2px 8px;border-radius:6px;background:var(--panel2);color:var(--muted);white-space:nowrap}
+.tag.ess{background:rgba(52,195,143,.12);color:var(--good)}.tag.intro{background:rgba(230,169,59,.12);color:var(--warn)}.tag.now{background:rgba(123,140,255,.18);color:var(--accent)}
+.progress{height:8px;border-radius:99px;background:var(--panel2);overflow:hidden;border:1px solid var(--border)}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:99px;transition:width .4s ease}
+.bar-row{display:grid;grid-template-columns:minmax(90px,170px) 1fr 44px;gap:10px;align-items:center;font-size:13px;margin:7px 0}
+.bar-row .bl{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bar-row .bv{text-align:right;font-variant-numeric:tabular-nums}
+.cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:6px}
+.cell{aspect-ratio:1;border-radius:6px;border:1px solid var(--border2);background:var(--panel2);color:var(--muted);font-size:11px;cursor:pointer;padding:0;font-family:var(--mono)}
+.cell:hover{border-color:var(--accent)}.cell.done{background:rgba(52,195,143,.2);border-color:rgba(52,195,143,.6);color:var(--good)}.cell.today{outline:2px solid var(--accent);outline-offset:1px}
+.donut-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut{width:150px;height:150px}.d-n{font-size:28px;font-weight:700;fill:var(--text)}.d-s{font-size:10px;fill:var(--muted);letter-spacing:.08em}
+.legend li{display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0}.legend b{width:10px;height:10px;border-radius:3px;display:inline-block}
+.checks li{margin:0}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;border-radius:8px;cursor:pointer}
+.check:hover{background:var(--panel2)}
+.check input{margin-top:3px}
+.check .tt{font-weight:500;font-size:14px}.check .dd{font-size:12.5px;color:var(--muted)}
+.check input:checked ~ div .tt{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--border2)}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.card-head h3{margin:0}
+.callout{border:1px solid rgba(230,169,59,.35);background:rgba(230,169,59,.07);border-radius:var(--radius);padding:14px 16px;font-size:14px;margin-bottom:16px}
+.phase{margin-bottom:26px}.phase>h3{font-size:18px;margin-bottom:4px}.phase>p{margin-bottom:12px}
+.week h4{font-size:14px;margin-bottom:4px}.week ul{margin:8px 0}.week li{font-size:13px;display:flex;gap:8px;align-items:center;padding:2px 0}
+
+/* planner */
+.day-list{display:flex;flex-direction:column;gap:10px}
+.day{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);transition:border-color .2s}
+.day.done{border-color:rgba(52,195,143,.45)}.day.today{box-shadow:0 0 0 1px var(--accent)}
+.day summary{list-style:none;display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;flex-wrap:wrap}
+.day summary::-webkit-details-marker{display:none}
+.day summary::after{content:"▸";margin-left:auto;color:var(--muted);transition:transform .2s}
+.day details[open] summary::after{transform:rotate(90deg)}
+.day .dn{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.08em}
+.day .dt{font-weight:600}
+.day.done .dt{color:var(--muted)}
+.day .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.day-body{padding:4px 18px 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;border-top:1px solid var(--border)}
+.day-body h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:14px 0 6px}
+.day-body li{font-size:14px;padding:3px 0}
+.bullets li{position:relative;padding-left:14px}.bullets li::before{content:"";position:absolute;left:2px;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--border2)}
+.lc-item{display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.lc-item select{width:auto;font-size:12px;padding:3px 6px}
+.outcome{border-left:3px solid var(--accent2);padding:6px 10px;background:var(--panel2);border-radius:0 8px 8px 0;font-size:14px}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:900px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--panel);position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+tr.s2 td:first-child,tr.s3 td:first-child{box-shadow:inset 3px 0 0 var(--good)}
+tr.s1 td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+td input,td select{padding:5px 8px;font-size:13px}
+td input[type=number]{width:76px}td input[type=date]{width:140px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+details.add{margin-bottom:14px}details.add summary{cursor:pointer;color:var(--accent);font-size:14px;margin-bottom:10px}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end}
+.rate{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.res a{display:block;padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;background:var(--panel2);text-decoration:none;color:var(--text)}
+.res a:hover{border-color:var(--accent)}.res a b{display:block;font-size:14px}.res a span{font-size:12.5px;color:var(--muted)}
+.stack>*+*{margin-top:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--border2);border-radius:var(--radius)}
+#toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,30px);background:#1d2433;border:1px solid var(--border2);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:90vw}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:960px){
+ .sidebar{transform:translateX(-100%)}.sidebar.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.6)}
+ .scrim.show{display:block}.main-wrap{margin-left:0}.hamburger{display:inline-flex}
+ .topbar{padding:10px 14px}main{padding:18px 14px}.chip.hide-s{display:none}
+}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters label:first-child{grid-column:1/-1}.bar-row{grid-template-columns:90px 1fr 40px}.hero{padding:18px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="app">
+  <aside id="sidebar" class="sidebar" aria-label="Sidebar">
+    <div class="brand"><b>MISSION GOOGLE</b><span>90 DAY SWE ROADMAP</span></div>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#/dashboard" data-view="dashboard"><i></i>Dashboard</a>
+      <a href="#/roadmap" data-view="roadmap"><i></i>Roadmap</a>
+      <a href="#/planner" data-view="planner"><i></i>Daily Planner</a>
+      <a href="#/leetcode" data-view="leetcode"><i></i>LeetCode Tracker</a>
+      <a href="#/python" data-view="python"><i></i>Python Tracker</a>
+      <a href="#/cs" data-view="cs"><i></i>CS Fundamentals</a>
+      <a href="#/projects" data-view="projects"><i></i>Projects</a>
+      <a href="#/interview" data-view="interview"><i></i>Interview Prep</a>
+      <a href="#/resources" data-view="resources"><i></i>Resources</a>
+      <a href="#/data" data-view="data"><i></i>Data &amp; Settings</a>
+    </nav>
+    <div class="side-progress">
+      <div class="row" style="justify-content:space-between;font-size:12px;margin-bottom:6px"><span class="muted">Overall</span><b id="sbPct">0%</b></div>
+      <div class="progress" role="progressbar" aria-label="Overall completion" aria-valuemin="0" aria-valuemax="100" id="sbBarWrap"><i id="sbBar" style="width:0%"></i></div>
+      <p class="small muted" style="margin-top:8px" id="sbDay"></p>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="main-wrap">
+    <header class="topbar">
+      <button class="btn hamburger" id="menuBtn" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button>
+      <div class="search-top"><input type="search" id="gSearch" placeholder="Search the 90-day plan…" aria-label="Search the 90-day plan"></div>
+      <div class="grow"></div>
+      <span class="chip hide-s" id="chipDay"></span>
+      <span class="chip" id="chipStreak"></span>
+    </header>
+    <main id="main" tabindex="-1">
+
+      <section id="view-dashboard" class="view" hidden aria-label="Dashboard"><div id="dashBody"></div></section>
+
+      <section id="view-roadmap" class="view" hidden aria-labelledby="h-roadmap">
+        <div class="view-head"><div><h2 id="h-roadmap" tabindex="-1">Three-Month Roadmap</h2><p class="muted">Month 1 builds the base, Month 2 builds pattern fluency, Month 3 builds interview readiness.</p></div></div>
+        <div id="roadBody"></div>
+      </section>
+
+      <section id="view-planner" class="view" hidden aria-labelledby="h-planner">
+        <div class="view-head"><div><h2 id="h-planner" tabindex="-1">Daily Planner</h2><p class="muted">90 days. Tick a day complete only when you have finished it.</p></div><button class="btn primary" id="jumpToday">Jump to today</button></div>
+        <div class="filters">
+          <label class="f">Search<input type="search" id="pq" placeholder="Topics, concepts, problems, notes…"></label>
+          <label class="f">Month<select id="pMonth"><option value="all">All months</option><option value="1">Month 1</option><option value="2">Month 2</option><option value="3">Month 3</option></select></label>
+          <label class="f">Week<select id="pWeek"></select></label>
+          <label class="f">Status<select id="pStatus"><option value="all">All days</option><option value="done">Completed</option><option value="todo">Not completed</option></select></label>
+          <button class="btn" id="pExpand">Expand all</button>
+        </div>
+        <p id="pCount" class="muted small" style="margin-bottom:10px" aria-live="polite"></p>
+        <div id="plannerList" class="day-list"></div>
+      </section>
+
+      <section id="view-leetcode" class="view" hidden aria-labelledby="h-lc">
+        <div class="view-head"><div><h2 id="h-lc" tabindex="-1">LeetCode Tracker</h2><p class="muted">Every problem from the daily plan, ordered from Easy to Medium. Links go to leetcode.com.</p></div></div>
+        <div class="chips" id="lcChips"></div>
+        <div class="filters">
+          <label class="f">Search<input type="search" id="lq" placeholder="Problem name or note…"></label>
+          <label class="f">Difficulty<select id="lDiff"><option value="all">All</option><option>Easy</option><option>Medium</option><option>Hard</option></select></label>
+          <label class="f">Topic<select id="lTopic"></select></label>
+          <label class="f">Status<select id="lStatus"><option value="all">All</option><option value="0">Not Started</option><option value="1">Attempted</option><option value="2">Solved with Hint</option><option value="3">Solved Independently</option></select></label>
+        </div>
+        <details class="add card"><summary>+ Add your own problem</summary>
+          <form id="addProb" class="form-row">
+            <label class="f">Name<input type="text" id="apName" required></label>
+            <label class="f">LeetCode URL<input type="text" id="apUrl" placeholder="https://leetcode.com/problems/…" required></label>
+            <label class="f">Difficulty<select id="apDiff"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></label>
+            <label class="f">Topic<input type="text" id="apTopic" placeholder="e.g. Graphs" required></label>
+            <button class="btn primary" type="submit">Add problem</button>
+          </form>
+        </details>
+        <p id="lCount" class="muted small" style="margin-bottom:8px" aria-live="polite"></p>
+        <div class="tw"><table><thead><tr><th>Problem</th><th>Difficulty</th><th>Topic</th><th>Day</th><th>Status</th><th>Attempt date</th><th>Time (min)</th><th>Notes</th></tr></thead><tbody id="lcBody"></tbody></table></div>
+      </section>
+
+      <section id="view-python" class="view" hidden aria-labelledby="h-py">
+        <div class="view-head"><div><h2 id="h-py" tabindex="-1">Python Learning Tracker</h2><p class="muted">Tick a topic only when you can explain it and use it without looking it up.</p></div></div>
+        <div id="pyBody" class="grid3"></div>
+      </section>
+
+      <section id="view-cs" class="view" hidden aria-labelledby="h-cs">
+        <div class="view-head"><div><h2 id="h-cs" tabindex="-1">Computer Science Tracker</h2><p class="muted">The fundamentals Google interviewers expect beyond DSA.</p></div></div>
+        <div id="csBody" class="grid3"></div>
+      </section>
+
+      <section id="view-projects" class="view" hidden aria-labelledby="h-proj">
+        <div class="view-head"><div><h2 id="h-proj" tabindex="-1">Project Tracker</h2><p class="muted">Use the projects to practise engineering, not to pad a resume.</p></div></div>
+        <div id="projBody" class="grid2" style="margin-top:0"></div>
+      </section>
+
+      <section id="view-interview" class="view" hidden aria-labelledby="h-int">
+        <div class="view-head"><div><h2 id="h-int" tabindex="-1">Google Interview Preparation</h2><p class="muted">Coding, behavioural and system design frameworks, plus a mock interview scorecard.</p></div></div>
+        <div id="intBody"></div>
+      </section>
+
+      <section id="view-resources" class="view" hidden aria-labelledby="h-res">
+        <div class="view-head"><div><h2 id="h-res" tabindex="-1">Resources</h2><p class="muted">Official and reputable sources. Links open in a new tab.</p></div></div>
+        <div id="resBody" class="grid3"></div>
+      </section>
+
+      <section id="view-data" class="view" hidden aria-labelledby="h-data">
+        <div class="view-head"><div><h2 id="h-data" tabindex="-1">Data &amp; Settings</h2><p class="muted">Progress is saved in this browser only. Export a backup regularly.</p></div></div>
+        <div class="grid2" style="margin-top:0">
+          <div class="card stack">
+            <h3>Plan settings</h3>
+            <label class="f">Day 1 start date<input type="date" id="setStart"></label>
+            <label class="f">Daily study time: <b id="setMinLbl"></b><input type="range" id="setMin" min="60" max="300" step="15"></label>
+            <p class="small muted">Estimated times in the planner scale with this value (the plan is designed around 2.5 hours a day).</p>
+          </div>
+          <div class="card stack">
+            <h3>Backup and reset</h3>
+            <div class="row"><button class="btn primary" id="btnExport">Export progress (JSON)</button><button class="btn" id="btnImport">Import progress</button><button class="btn danger" id="btnReset">Reset all progress</button></div>
+            <p class="small muted" id="storeMsg"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script>
+(function(){
+'use strict';
+
+/* =====================================================================
+   DATA  (curriculum content)
+   ===================================================================== */
+/*DATA-START*/
+
+/* Weeks: ess = essential (must be solid), intro = introductory exposure */
+const WEEKS=[
+ {n:1,t:"Python fundamentals revision",ess:["Functions, arguments and return values","Lists, tuples, dicts and sets","Loops, conditions and strings","Recursion fundamentals and Big-O"],intro:["Lambda, map and filter","Generators"]},
+ {n:2,t:"Arrays and strings",ess:["Array traversal","Two pointers","Prefix sums","Frequency counting","Time and space complexity"],intro:["Sorting basics","Searching basics"]},
+ {n:3,t:"Hash maps, sets and problem patterns",ess:["Dictionary operations and hashing","Duplicate detection","Frequency maps","Grouping elements","Two Sum pattern"],intro:["Sliding window introduction"]},
+ {n:4,t:"Stack, queue and linked lists",ess:["Stack and queue implementation","Valid parentheses","Singly linked lists and reversal","Fast and slow pointers"],intro:["Monotonic stack introduction"]},
+ {n:5,t:"Binary search and sorting",ess:["Binary search","Search insertion position","Search in rotated arrays","Sorting complexity"],intro:["Merge sort implementation","Quick sort and quickselect"]},
+ {n:6,t:"Recursion and backtracking",ess:["Recursion trees and base conditions","Subsets","Permutations","Combinations"],intro:["Advanced backtracking (N-Queens, partitioning)"]},
+ {n:7,t:"Trees and heaps",ess:["Binary trees and traversals","BFS and DFS on trees","Binary search trees","Lowest common ancestor","Heap, priority queue and Top K"],intro:["Tree DP style problems (diameter)"]},
+ {n:8,t:"Graphs and greedy algorithms",ess:["Graph representations","BFS and DFS","Connected components","Cycle detection","Greedy and interval problems"],intro:["Shortest path (Dijkstra)","Topological sort"]},
+ {n:9,t:"Dynamic programming introduction",ess:["Memoization and tabulation","Fibonacci / climbing stairs","House robber","Coin change"],intro:["Longest common subsequence","0/1 knapsack and edit distance"]},
+ {n:10,t:"Computer science fundamentals",ess:["Processes and threads","Memory management basics","Race conditions and deadlocks","HTTP/HTTPS","TCP/IP and DNS"],intro:["asyncio","TLS handshake details"]},
+ {n:11,t:"Databases and backend engineering",ess:["SQL joins and aggregation","Indexes","Transactions and ACID","Normalization","REST API design","Caching","Testing and debugging"],intro:["Message queues","Authentication (JWT / OAuth)"]},
+ {n:12,t:"System design and interview preparation",ess:["Scalability and load balancing","Caching strategies","Replication and partitioning","Design a URL shortener","Behavioural interviews"],intro:["Distributed systems introduction","Notification system design","Chat application design"]},
+ {n:13,t:"Final sprint: mocks, revision and applications",ess:["Timed mock coding interviews","Weakness revision","Finish the backend project","Resume and application strategy"],intro:["Hard-problem exposure"]}
+];
+
+const PHASES=[
+ {m:1,t:"Month 1 – Python, DSA Fundamentals and Problem-Solving",weeks:[1,2,3,4],goal:["Understand core Python and DSA.","Solve approximately 30–40 problems.","Be able to explain solutions independently."]},
+ {m:2,t:"Month 2 – Intermediate and Advanced DSA",weeks:[5,6,7,8,9],goal:["Become comfortable with Medium-level problems.","Solve approximately 40–50 additional problems.","Understand common interview patterns."]},
+ {m:3,t:"Month 3 – Google Interview and Software Engineering Preparation",weeks:[10,11,12,13],goal:["Complete a curated set of approximately 100–120 problems across all phases.","Complete one substantial backend project.","Complete mock interviews, identify weaknesses and revise them."]}
+];
+
+/* slug|Name|Difficulty (E/M/H)|Topic */
+const PROBLEM_LINES=`
+running-sum-of-1d-array|Running Sum of 1d Array|E|Arrays
+richest-customer-wealth|Richest Customer Wealth|E|Arrays
+concatenation-of-array|Concatenation of Array|E|Arrays
+shuffle-the-array|Shuffle the Array|E|Arrays
+defanging-an-ip-address|Defanging an IP Address|E|Strings
+contains-duplicate|Contains Duplicate|E|Hash Map
+jewels-and-stones|Jewels and Stones|E|Hash Map
+intersection-of-two-arrays|Intersection of Two Arrays|E|Hash Map
+fizz-buzz|Fizz Buzz|E|Math
+reverse-string|Reverse String|E|Two Pointers
+is-subsequence|Is Subsequence|E|Two Pointers
+kids-with-the-greatest-number-of-candies|Kids With the Greatest Number of Candies|E|Arrays
+number-of-good-pairs|Number of Good Pairs|E|Hash Map
+fibonacci-number|Fibonacci Number|E|Recursion
+power-of-two|Power of Two|E|Math
+n-th-tribonacci-number|N-th Tribonacci Number|E|Recursion
+palindrome-number|Palindrome Number|E|Math
+roman-to-integer|Roman to Integer|E|Strings
+move-zeroes|Move Zeroes|E|Two Pointers
+remove-duplicates-from-sorted-array|Remove Duplicates from Sorted Array|E|Two Pointers
+plus-one|Plus One|E|Arrays
+valid-palindrome|Valid Palindrome|E|Two Pointers
+two-sum-ii-input-array-is-sorted|Two Sum II - Input Array Is Sorted|M|Two Pointers
+merge-sorted-array|Merge Sorted Array|E|Two Pointers
+container-with-most-water|Container With Most Water|M|Two Pointers
+sort-colors|Sort Colors|M|Sorting
+3sum|3Sum|M|Two Pointers
+range-sum-query-immutable|Range Sum Query - Immutable|E|Prefix Sum
+find-pivot-index|Find Pivot Index|E|Prefix Sum
+product-of-array-except-self|Product of Array Except Self|M|Prefix Sum
+valid-anagram|Valid Anagram|E|Hash Map
+first-unique-character-in-a-string|First Unique Character in a String|E|Hash Map
+ransom-note|Ransom Note|E|Hash Map
+majority-element|Majority Element|E|Arrays
+missing-number|Missing Number|E|Arrays
+single-number|Single Number|E|Arrays
+maximum-subarray|Maximum Subarray|M|Arrays
+best-time-to-buy-and-sell-stock|Best Time to Buy and Sell Stock|E|Arrays
+longest-common-prefix|Longest Common Prefix|E|Strings
+design-hashmap|Design HashMap|E|Design
+design-hashset|Design HashSet|E|Design
+contains-duplicate-ii|Contains Duplicate II|E|Hash Map
+happy-number|Happy Number|E|Hash Map
+find-all-numbers-disappeared-in-an-array|Find All Numbers Disappeared in an Array|E|Arrays
+top-k-frequent-elements|Top K Frequent Elements|M|Hash Map
+isomorphic-strings|Isomorphic Strings|E|Hash Map
+word-pattern|Word Pattern|E|Hash Map
+group-anagrams|Group Anagrams|M|Hash Map
+unique-email-addresses|Unique Email Addresses|E|Hash Map
+two-sum|Two Sum|E|Hash Map
+subarray-sum-equals-k|Subarray Sum Equals K|M|Prefix Sum
+longest-consecutive-sequence|Longest Consecutive Sequence|M|Hash Map
+maximum-average-subarray-i|Maximum Average Subarray I|E|Sliding Window
+longest-substring-without-repeating-characters|Longest Substring Without Repeating Characters|M|Sliding Window
+minimum-size-subarray-sum|Minimum Size Subarray Sum|M|Sliding Window
+longest-repeating-character-replacement|Longest Repeating Character Replacement|M|Sliding Window
+permutation-in-string|Permutation in String|M|Sliding Window
+pascals-triangle|Pascal's Triangle|E|Arrays
+valid-parentheses|Valid Parentheses|E|Stack
+backspace-string-compare|Backspace String Compare|E|Stack
+implement-queue-using-stacks|Implement Queue using Stacks|E|Queue
+number-of-recent-calls|Number of Recent Calls|E|Queue
+implement-stack-using-queues|Implement Stack using Queues|E|Queue
+design-circular-queue|Design Circular Queue|M|Queue
+next-greater-element-i|Next Greater Element I|E|Stack
+daily-temperatures|Daily Temperatures|M|Stack
+min-stack|Min Stack|M|Stack
+evaluate-reverse-polish-notation|Evaluate Reverse Polish Notation|M|Stack
+decode-string|Decode String|M|Stack
+asteroid-collision|Asteroid Collision|M|Stack
+middle-of-the-linked-list|Middle of the Linked List|E|Linked List
+remove-linked-list-elements|Remove Linked List Elements|E|Linked List
+delete-node-in-a-linked-list|Delete Node in a Linked List|M|Linked List
+merge-two-sorted-lists|Merge Two Sorted Lists|E|Linked List
+reverse-linked-list|Reverse Linked List|E|Linked List
+linked-list-cycle|Linked List Cycle|E|Linked List
+palindrome-linked-list|Palindrome Linked List|E|Linked List
+remove-nth-node-from-end-of-list|Remove Nth Node From End of List|M|Linked List
+linked-list-cycle-ii|Linked List Cycle II|M|Linked List
+odd-even-linked-list|Odd Even Linked List|M|Linked List
+add-two-numbers|Add Two Numbers|M|Linked List
+binary-search|Binary Search|E|Binary Search
+first-bad-version|First Bad Version|E|Binary Search
+sqrtx|Sqrt(x)|E|Binary Search
+search-insert-position|Search Insert Position|E|Binary Search
+find-first-and-last-position-of-element-in-sorted-array|Find First and Last Position of Element in Sorted Array|M|Binary Search
+valid-perfect-square|Valid Perfect Square|E|Binary Search
+find-minimum-in-rotated-sorted-array|Find Minimum in Rotated Sorted Array|M|Binary Search
+search-in-rotated-sorted-array|Search in Rotated Sorted Array|M|Binary Search
+find-peak-element|Find Peak Element|M|Binary Search
+koko-eating-bananas|Koko Eating Bananas|M|Binary Search
+capacity-to-ship-packages-within-d-days|Capacity To Ship Packages Within D Days|M|Binary Search
+search-a-2d-matrix|Search a 2D Matrix|M|Binary Search
+sort-an-array|Sort an Array|M|Sorting
+sort-list|Sort List|M|Sorting
+kth-largest-element-in-an-array|Kth Largest Element in an Array|M|Heap
+merge-intervals|Merge Intervals|M|Intervals
+find-k-closest-elements|Find K Closest Elements|M|Binary Search
+time-based-key-value-store|Time Based Key-Value Store|M|Binary Search
+rotate-array|Rotate Array|M|Arrays
+pow-x-n|Pow(x, n)|M|Recursion
+power-of-three|Power of Three|E|Math
+subsets|Subsets|M|Backtracking
+subsets-ii|Subsets II|M|Backtracking
+sum-of-all-subset-xor-totals|Sum of All Subset XOR Totals|E|Backtracking
+permutations|Permutations|M|Backtracking
+permutations-ii|Permutations II|M|Backtracking
+letter-case-permutation|Letter Case Permutation|M|Backtracking
+combinations|Combinations|M|Backtracking
+combination-sum|Combination Sum|M|Backtracking
+combination-sum-ii|Combination Sum II|M|Backtracking
+combination-sum-iii|Combination Sum III|M|Backtracking
+letter-combinations-of-a-phone-number|Letter Combinations of a Phone Number|M|Backtracking
+generate-parentheses|Generate Parentheses|M|Backtracking
+word-search|Word Search|M|Backtracking
+palindrome-partitioning|Palindrome Partitioning|M|Backtracking
+n-queens|N-Queens|H|Backtracking
+restore-ip-addresses|Restore IP Addresses|M|Backtracking
+maximum-depth-of-binary-tree|Maximum Depth of Binary Tree|E|Trees
+invert-binary-tree|Invert Binary Tree|E|Trees
+same-tree|Same Tree|E|Trees
+symmetric-tree|Symmetric Tree|E|Trees
+binary-tree-inorder-traversal|Binary Tree Inorder Traversal|E|Trees
+binary-tree-preorder-traversal|Binary Tree Preorder Traversal|E|Trees
+binary-tree-postorder-traversal|Binary Tree Postorder Traversal|E|Trees
+binary-tree-level-order-traversal|Binary Tree Level Order Traversal|M|Trees
+binary-tree-right-side-view|Binary Tree Right Side View|M|Trees
+path-sum|Path Sum|E|Trees
+binary-tree-zigzag-level-order-traversal|Binary Tree Zigzag Level Order Traversal|M|Trees
+validate-binary-search-tree|Validate Binary Search Tree|M|Trees
+kth-smallest-element-in-a-bst|Kth Smallest Element in a BST|M|Trees
+insert-into-a-binary-search-tree|Insert into a Binary Search Tree|M|Trees
+convert-sorted-array-to-binary-search-tree|Convert Sorted Array to Binary Search Tree|E|Trees
+lowest-common-ancestor-of-a-binary-search-tree|Lowest Common Ancestor of a Binary Search Tree|M|Trees
+lowest-common-ancestor-of-a-binary-tree|Lowest Common Ancestor of a Binary Tree|M|Trees
+diameter-of-binary-tree|Diameter of Binary Tree|E|Trees
+balanced-binary-tree|Balanced Binary Tree|E|Trees
+kth-largest-element-in-a-stream|Kth Largest Element in a Stream|E|Heap
+last-stone-weight|Last Stone Weight|E|Heap
+k-closest-points-to-origin|K Closest Points to Origin|M|Heap
+top-k-frequent-words|Top K Frequent Words|M|Heap
+task-scheduler|Task Scheduler|M|Heap
+find-median-from-data-stream|Find Median from Data Stream|H|Heap
+find-if-path-exists-in-graph|Find if Path Exists in Graph|E|Graphs
+find-the-town-judge|Find the Town Judge|E|Graphs
+number-of-provinces|Number of Provinces|M|Graphs
+flood-fill|Flood Fill|E|Graphs
+rotting-oranges|Rotting Oranges|M|Graphs
+shortest-path-in-binary-matrix|Shortest Path in Binary Matrix|M|Graphs
+01-matrix|01 Matrix|M|Graphs
+number-of-islands|Number of Islands|M|Graphs
+max-area-of-island|Max Area of Island|M|Graphs
+clone-graph|Clone Graph|M|Graphs
+surrounded-regions|Surrounded Regions|M|Graphs
+course-schedule|Course Schedule|M|Graphs
+course-schedule-ii|Course Schedule II|M|Graphs
+redundant-connection|Redundant Connection|M|Graphs
+network-delay-time|Network Delay Time|M|Graphs
+cheapest-flights-within-k-stops|Cheapest Flights Within K Stops|M|Graphs
+path-with-minimum-effort|Path With Minimum Effort|M|Graphs
+assign-cookies|Assign Cookies|E|Greedy
+jump-game|Jump Game|M|Greedy
+jump-game-ii|Jump Game II|M|Greedy
+gas-station|Gas Station|M|Greedy
+partition-labels|Partition Labels|M|Greedy
+insert-interval|Insert Interval|M|Intervals
+non-overlapping-intervals|Non-overlapping Intervals|M|Intervals
+minimum-number-of-arrows-to-burst-balloons|Minimum Number of Arrows to Burst Balloons|M|Intervals
+climbing-stairs|Climbing Stairs|E|Dynamic Programming
+min-cost-climbing-stairs|Min Cost Climbing Stairs|E|Dynamic Programming
+house-robber|House Robber|M|Dynamic Programming
+house-robber-ii|House Robber II|M|Dynamic Programming
+delete-and-earn|Delete and Earn|M|Dynamic Programming
+coin-change|Coin Change|M|Dynamic Programming
+coin-change-ii|Coin Change II|M|Dynamic Programming
+perfect-squares|Perfect Squares|M|Dynamic Programming
+unique-paths|Unique Paths|M|Dynamic Programming
+unique-paths-ii|Unique Paths II|M|Dynamic Programming
+minimum-path-sum|Minimum Path Sum|M|Dynamic Programming
+triangle|Triangle|M|Dynamic Programming
+longest-common-subsequence|Longest Common Subsequence|M|Dynamic Programming
+longest-increasing-subsequence|Longest Increasing Subsequence|M|Dynamic Programming
+edit-distance|Edit Distance|M|Dynamic Programming
+partition-equal-subset-sum|Partition Equal Subset Sum|M|Dynamic Programming
+target-sum|Target Sum|M|Dynamic Programming
+word-break|Word Break|M|Dynamic Programming
+decode-ways|Decode Ways|M|Dynamic Programming
+longest-palindromic-substring|Longest Palindromic Substring|M|Dynamic Programming
+palindromic-substrings|Palindromic Substrings|M|Dynamic Programming
+maximum-product-subarray|Maximum Product Subarray|M|Dynamic Programming
+best-time-to-buy-and-sell-stock-with-cooldown|Best Time to Buy and Sell Stock with Cooldown|M|Dynamic Programming
+design-linked-list|Design Linked List|M|Design
+implement-trie-prefix-tree|Implement Trie (Prefix Tree)|M|Design
+print-in-order|Print in Order|E|Concurrency
+print-foobar-alternately|Print FooBar Alternately|M|Concurrency
+encode-and-decode-tinyurl|Encode and Decode TinyURL|M|Design
+design-browser-history|Design Browser History|M|Design
+design-underground-system|Design Underground System|M|Design
+combine-two-tables|Combine Two Tables|E|SQL
+second-highest-salary|Second Highest Salary|M|SQL
+employees-earning-more-than-their-managers|Employees Earning More Than Their Managers|E|SQL
+duplicate-emails|Duplicate Emails|E|SQL
+department-highest-salary|Department Highest Salary|M|SQL
+rank-scores|Rank Scores|M|SQL
+consecutive-numbers|Consecutive Numbers|M|SQL
+customers-who-never-order|Customers Who Never Order|E|SQL
+delete-duplicate-emails|Delete Duplicate Emails|E|SQL
+nth-highest-salary|Nth Highest Salary|M|SQL
+game-play-analysis-i|Game Play Analysis I|E|SQL
+rising-temperature|Rising Temperature|E|SQL
+design-twitter|Design Twitter|M|Design
+design-parking-system|Design Parking System|E|Design
+insert-delete-getrandom-o1|Insert Delete GetRandom O(1)|M|Design
+random-pick-with-weight|Random Pick with Weight|M|Design
+design-authentication-manager|Design Authentication Manager|M|Design
+lru-cache|LRU Cache|M|Design
+lfu-cache|LFU Cache|H|Design
+single-threaded-cpu|Single-Threaded CPU|M|Heap
+stock-price-fluctuation|Stock Price Fluctuation|M|Design
+minimum-window-substring|Minimum Window Substring|H|Sliding Window
+sliding-window-maximum|Sliding Window Maximum|H|Sliding Window
+binary-tree-maximum-path-sum|Binary Tree Maximum Path Sum|H|Trees
+word-ladder|Word Ladder|H|Graphs
+trapping-rain-water|Trapping Rain Water|H|Two Pointers
+merge-k-sorted-lists|Merge k Sorted Lists|H|Linked List
+largest-rectangle-in-histogram|Largest Rectangle in Histogram|H|Stack
+`;
+
+/* Daily plan: [title, concepts[], exercises[], leetcode slugs[], base minutes, outcome] */
+const DAYS=[
+/* ---------- WEEK 1 ---------- */
+["Python Functions",["Function declaration with def","Parameters vs arguments","Return values and None","Local and global scope","Default and keyword arguments"],["Write a function to calculate the sum of two numbers","Write a function to check even or odd","Write a function to find the largest number in a list without using max()"],["running-sum-of-1d-array","richest-customer-wealth"],120,"Understand function execution, scope and return values."],
+["Arguments, *args, **kwargs and Scope",["Positional vs keyword arguments","*args and **kwargs","Mutable default argument pitfall","LEGB scope rule","Docstrings and type hints"],["Write sum_all(*args) and describe(**kwargs)","Return min, max and average from one function using a tuple","Reproduce the mutable-default bug with a list, then fix it"],["concatenation-of-array","shuffle-the-array","defanging-an-ip-address"],120,"Write flexible functions and avoid the mutable default bug."],
+["Lists, Tuples, Sets and Dictionaries",["List operations and slicing","Tuple immutability and unpacking","Set union, intersection, difference","dict get, items, setdefault","Choosing the right structure"],["Remove duplicates from a list while preserving order","Count word frequency in a sentence using a dict","Find common and unique elements of two lists using sets"],["contains-duplicate","jewels-and-stones","intersection-of-two-arrays"],150,"Choose the right built-in structure and know the cost of its operations."],
+["Loops, Conditions and Strings",["for, while, enumerate and zip","break, continue and loop else","String methods and f-strings","Slicing and reversing","ord() and chr()"],["Check whether a string is a palindrome","Count vowels and consonants","Implement FizzBuzz with a dict-driven rule table"],["fizz-buzz","reverse-string","is-subsequence"],150,"Manipulate strings and control flow fluently."],
+["Comprehensions, Lambda, map and filter",["List, dict and set comprehensions","lambda expressions","map, filter and reduce","sorted() with key=","Generator expressions vs lists"],["Squares of even numbers using a comprehension","Sort a list of tuples by the second element","Invert a dict using a comprehension"],["kids-with-the-greatest-number-of-candies","number-of-good-pairs"],120,"Write idiomatic Python and know when comprehensions help readability."],
+["Recursion Fundamentals and Big-O",["Base case and recursive case","The call stack","Factorial and Fibonacci","O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n)","Space complexity and recursion depth"],["Recursive factorial and sum of digits","Fibonacci recursive vs memoized (time both)","Annotate the Big-O of five functions you wrote earlier"],["fibonacci-number","power-of-two","n-th-tribonacci-number"],150,"Trace recursion and state the time and space complexity of simple code."],
+["Week 1 Review and Consolidation",["Revisit the weakest topic from this week","Redo two problems without hints","Python Tutor visualisation of recursion","Write a one-page complexity cheat sheet"],["Rewrite three earlier solutions more idiomatically","Explain one solution aloud as if teaching","Use timeit to compare list vs set membership"],["palindrome-number","roman-to-integer"],180,"Explain every solution of the week without notes."],
+/* ---------- WEEK 2 ---------- */
+["Array Traversal and In-place Operations",["Index traversal patterns","In-place modification","Swapping without extra space","Tracking max/min while scanning","Reversing in place"],["Find the second largest element in one pass","Rotate a list by k positions","Move all zeros to the end in place"],["move-zeroes","remove-duplicates-from-sorted-array","plus-one"],150,"Modify arrays in place with O(1) extra space."],
+["Two Pointers I: Opposite Ends",["Opposite-end pointers","Why sorted input helps","Loop invariants","Pointer movement rules"],["Reverse an array with two pointers","Palindrome check with two pointers","Find a pair with a given sum in a sorted array"],["valid-palindrome","two-sum-ii-input-array-is-sorted","merge-sorted-array"],150,"Recognise when two pointers replaces nested loops."],
+["Two Pointers II: Same Direction and Partitioning",["Slow/fast write pointer","Partitioning around a value","De-duplicating sorted data","Introduction to 3Sum"],["Remove an element in place","Container with most water: brute force, then optimise","Sort an array of 0s, 1s and 2s in one pass"],["container-with-most-water","sort-colors","3sum"],150,"Apply two pointers to partitioning and triplet problems."],
+["Prefix Sums",["Building a prefix array","Range sum queries in O(1)","Running sums","Subarray sums with prefix differences","Off-by-one care"],["Build a prefix array and answer 5 range queries","Find the pivot index","Compute product of array except self using prefix/suffix products"],["range-sum-query-immutable","find-pivot-index","product-of-array-except-self"],150,"Precompute once, answer many queries fast."],
+["Frequency Counting and String Operations",["collections.Counter and dict counting","Fixed-size 26-letter count arrays","Anagram detection","First unique character","String building and join"],["Anagram check with Counter and with sorted()","Find the most frequent character","Check if a ransom note can be built from a magazine"],["valid-anagram","first-unique-character-in-a-string","ransom-note"],150,"Use counting instead of sorting when it is cheaper."],
+["Sorting and Searching Basics",["Bubble, selection and insertion sort","Python's sorted() and Timsort","Key functions and stability","Linear search","Sorting complexity"],["Implement insertion sort","Sort strings by length then alphabetically","Count inversions by brute force"],["majority-element","missing-number","single-number"],150,"Know what sorting costs and when a sort is the shortcut."],
+["Week 2 Review and Kadane's Preview",["Kadane's algorithm idea","Single-pass profit maximisation","Review the week's patterns","Time and space complexity of each solution"],["Max subarray with brute force, then Kadane","Best time to buy and sell a stock in one pass","Explain two pointers vs prefix sums to yourself"],["maximum-subarray","best-time-to-buy-and-sell-stock","longest-common-prefix"],180,"Pick between brute force, two pointers and prefix sums with reasons."],
+/* ---------- WEEK 3 ---------- */
+["Hash Map Fundamentals",["Hash functions and collisions","Chaining vs open addressing","Load factor and resizing","Average O(1), worst O(n)","Hashable vs unhashable keys in Python"],["Implement a simple hash map with chaining","Trigger the unhashable-list error and use a tuple key","Use tuple(sorted(word)) as a canonical key"],["design-hashmap","design-hashset","intersection-of-two-arrays"],150,"Explain how a hash table works internally."],
+["Duplicate Detection with Sets",["The seen-set pattern","Set vs dict choice","Duplicates within a window","Space vs time trade-off"],["Find the first duplicate in a list","Detect a duplicate within k positions","Compare sort-based and set-based duplicate detection"],["contains-duplicate-ii","happy-number","find-all-numbers-disappeared-in-an-array"],150,"Trade space for time deliberately."],
+["Frequency Maps",["Counter.most_common","Comparing two frequency maps","Bucket sort by frequency","Majority element via map"],["Find the top 2 most frequent numbers","Check that two strings use the same characters with equal counts","Map characters of two strings one-to-one"],["top-k-frequent-elements","isomorphic-strings","word-pattern"],150,"Solve counting problems with maps in O(n)."],
+["Grouping Elements",["defaultdict(list)","Canonical keys","Grouping anagrams","Grouping by a computed property","Tuple keys"],["Group words by length","Group anagrams","Group integers by digit sum"],["group-anagrams","longest-consecutive-sequence","unique-email-addresses"],150,"Group data by a computed key."],
+["The Two Sum Pattern",["Complement lookup","One-pass hash map","Why it is O(n)","Variants: sorted, BST, indices","Subarray sums with prefix map"],["Two Sum brute force vs hash map","Count pairs with difference k","Subarray sum equals k with a prefix-sum map"],["two-sum","subarray-sum-equals-k","longest-consecutive-sequence"],150,"Turn a pair search into a lookup."],
+["Sliding Window Introduction",["Fixed-size window","Variable window: expand and shrink","Window state in a dict","Reusable template"],["Max sum of a window of size k","Longest substring without repeating characters","Smallest subarray with sum at least target"],["maximum-average-subarray-i","longest-substring-without-repeating-characters","minimum-size-subarray-sum"],150,"Write a correct sliding-window loop from a template."],
+["Week 3 Review and Timed Practice",["Timed 45-minute session with 2 problems","Compare approaches","Update your pattern notebook"],["Solve a problem aloud while timing yourself","Write the complexity for every solution","Redo one failed problem from Week 2"],["longest-repeating-character-replacement","permutation-in-string","pascals-triangle"],180,"Solve an Easy in about 15 and a Medium in about 30 minutes."],
+/* ---------- WEEK 4 ---------- */
+["Stack",["LIFO behaviour","Python list as a stack","push, pop, peek","Use cases: call stack, undo, parsing","Implement a Stack class"],["Stack class with is_empty and size","Reverse a string with a stack","Balanced brackets checker"],["valid-parentheses","backspace-string-compare","implement-queue-using-stacks"],150,"Implement and apply a stack."],
+["Queue and Deque",["FIFO behaviour","collections.deque and O(1) ends","Circular queue","Queue using two stacks","BFS preview"],["Queue with deque","Circular queue with fixed capacity","Moving counter of recent requests"],["number-of-recent-calls","implement-stack-using-queues","design-circular-queue"],150,"Choose between list, deque and a custom queue."],
+["Monotonic Stack Introduction",["Next greater element","Decreasing stack invariant","Storing indices","Amortised O(n)"],["Next greater element by brute force, then by stack","Daily temperatures","Describe why each element is pushed and popped once"],["next-greater-element-i","daily-temperatures","min-stack"],150,"Recognise next-greater / next-smaller problems."],
+["Stack Applications",["Evaluating postfix expressions","Decoding nested strings","Collision simulation","Parsing with a stack"],["Evaluate a postfix expression","Decode 3[a2[c]] style strings","Simulate asteroid collisions"],["evaluate-reverse-polish-notation","decode-string","asteroid-collision"],150,"Use a stack to process nested or sequential structures."],
+["Singly Linked List Basics",["Node class","Traversal","Insert and delete at head, tail, middle","Dummy-node technique","Arrays vs linked lists"],["Implement LinkedList with append, delete, find","Print the list and compute its length","Delete a node given only a pointer to it"],["middle-of-the-linked-list","remove-linked-list-elements","delete-node-in-a-linked-list","merge-two-sorted-lists"],150,"Implement and traverse a linked list without bugs."],
+["Reversing Lists and Fast/Slow Pointers",["Iterative reversal with three pointers","Recursive reversal","Floyd cycle detection","Finding the middle","N-th node from the end"],["Reverse a list iteratively and recursively","Detect a cycle","Check if a linked list is a palindrome"],["reverse-linked-list","linked-list-cycle","palindrome-linked-list","remove-nth-node-from-end-of-list"],150,"Manipulate pointers confidently."],
+["Month 1 Review and Checkpoint",["Count problems solved (target 30–40)","List weak topics","Redo five problems you needed hints for","Practise explaining each pattern"],["Write one template per pattern from Month 1","Explain Two Sum, Sliding Window and Reversal aloud","Update the tracker honestly"],["linked-list-cycle-ii","odd-even-linked-list","add-two-numbers"],180,"Month 1 checkpoint: solve Easy problems independently and explain patterns."],
+/* ---------- WEEK 5 ---------- */
+["Binary Search Fundamentals",["Sorted-input precondition","lo, hi, mid and loop invariants","mid = lo + (hi - lo) // 2","Iterative vs recursive","The bisect module"],["Iterative binary search","Recursive binary search","Use bisect_left and bisect_right"],["binary-search","first-bad-version","sqrtx"],150,"Write binary search without off-by-one errors."],
+["Insertion Position and Boundaries",["Lower bound and upper bound","First and last occurrence","Choosing hi = n vs n - 1","Termination conditions"],["Count occurrences of a number in a sorted array","Find insertion index manually and verify with bisect","Find the first element greater than x"],["search-insert-position","find-first-and-last-position-of-element-in-sorted-array","valid-perfect-square"],150,"Handle boundary variants of binary search."],
+["Search in Rotated Arrays",["Identify the sorted half","Find the pivot or minimum","Search for a target","Duplicates caveat"],["Find the minimum of a rotated array","Search a target in a rotated array","Find a peak element"],["find-minimum-in-rotated-sorted-array","search-in-rotated-sorted-array","find-peak-element"],150,"Reason about which half is sorted."],
+["Binary Search on the Answer",["Monotonic feasibility function","Defining the search space","Minimise the maximum / maximise the minimum","Template"],["Write can_finish(speed) for banana eating","Write can_ship(capacity) for the shipping problem","Search a sorted 2D matrix"],["koko-eating-bananas","capacity-to-ship-packages-within-d-days","search-a-2d-matrix"],150,"Spot problems where the answer, not the index, is searched."],
+["Merge Sort",["Divide and conquer","The merge procedure","O(n log n) time and O(n) space","Stability","Recurrence relation"],["Implement merge sort","Merge two sorted lists","Count inversions using merge sort"],["sort-an-array","sort-list"],150,"Implement merge sort and justify O(n log n)."],
+["Quick Sort and Quickselect",["Lomuto and Hoare partition","Pivot selection","Average O(n log n), worst O(n^2)","Quickselect for k-th element","Sorting complexity summary table"],["Implement quick sort with random pivot","Implement quickselect","Compare timing of your sorts to sorted()"],["kth-largest-element-in-an-array","merge-intervals"],150,"Explain partitioning and when quick sort degrades."],
+["Week 5 Review",["Binary search templates","Sorting trade-offs","Timed session"],["Write your own binary search template","Solve one problem using binary search on answer","Revisit one problem you failed"],["find-k-closest-elements","time-based-key-value-store","rotate-array"],180,"Binary search variants solved from memory."],
+/* ---------- WEEK 6 ---------- */
+["Recursion Trees and Base Conditions",["Drawing the recursion tree","Base conditions","Time complexity of tree recursion","Divide and conquer","Memoisation preview"],["Draw the call tree of fib(5)","Compute power x^n in O(log n)","Convert a recursive solution to iterative"],["pow-x-n","power-of-three"],150,"Predict the number of calls a recursive function makes."],
+["Subsets",["Include or exclude decision","Decision tree","Path list and copying it","Handling duplicates","2^n growth"],["Generate all subsets recursively","Generate subsets with a bitmask","Generate unique subsets of an array with duplicates"],["subsets","subsets-ii","sum-of-all-subset-xor-totals"],150,"Write the include/exclude template."],
+["Permutations",["Used-array technique","Swap technique","Pruning duplicates","n! growth"],["Generate all permutations of a list","Generate permutations of a string with repeated characters","Count permutations without generating them"],["permutations","permutations-ii","letter-case-permutation"],150,"Generate permutations and prune duplicates."],
+["Combinations",["Start-index technique","Fixed size k","Target sum combinations","Pruning with bounds"],["Generate combinations C(n, k)","Combination sum with reuse","Combination sum without reuse"],["combinations","combination-sum","combination-sum-ii"],150,"Avoid duplicate combinations using a start index."],
+["Backtracking Patterns",["Choose, explore, unchoose template","Constraint pruning","Grid search","Building strings"],["Generate valid parentheses","Phone keypad letter combinations","Word search in a grid"],["letter-combinations-of-a-phone-number","generate-parentheses","word-search"],150,"Apply the backtracking template to new problems."],
+["Advanced Backtracking",["Palindrome partitioning","N-Queens constraints","Restore IP addresses","Pruning for speed"],["Partition a string into palindromes","Place 4 queens by hand, then in code","Restore IP addresses"],["palindrome-partitioning","restore-ip-addresses","n-queens"],150,"Handle constraint-heavy backtracking (N-Queens is a stretch)."],
+["Week 6 Review",["Backtracking templates side by side","Complexity of each pattern","Redo failed problems"],["Write subsets, permutations and combinations from memory","State time complexity for each","Explain pruning with an example"],["combination-sum-iii"],180,"Write all three backtracking templates from memory."],
+/* ---------- WEEK 7 ---------- */
+["Binary Tree Basics",["TreeNode class","Height, depth, leaf, subtree","Recursion on trees","Complete, full and balanced trees"],["Build a tree from a list and print it","Compute height and node count recursively","Check if two trees are identical"],["maximum-depth-of-binary-tree","invert-binary-tree","same-tree","symmetric-tree"],150,"Solve simple tree problems recursively."],
+["Tree Traversals",["Pre-order, in-order, post-order","Iterative traversal with a stack","What each order is used for","Morris traversal (mention only)"],["Write the three traversals recursively","Write in-order iteratively","Print traversals for a sample tree by hand"],["binary-tree-inorder-traversal","binary-tree-preorder-traversal","binary-tree-postorder-traversal"],150,"Write all traversals recursively and iteratively."],
+["BFS and DFS on Trees",["Level-order with deque","DFS returning values","Path problems","Right-side view and zigzag"],["Level order traversal grouped by level","Collect the right-side view","Check for a root-to-leaf path sum"],["binary-tree-level-order-traversal","binary-tree-right-side-view","path-sum","binary-tree-zigzag-level-order-traversal"],150,"Choose BFS or DFS for a tree problem."],
+["Binary Search Trees",["BST property","Search, insert, delete","In-order gives sorted order","Validating with min/max bounds"],["Implement BST insert and search","Validate a BST with bounds","Find the k-th smallest in a BST"],["validate-binary-search-tree","kth-smallest-element-in-a-bst","insert-into-a-binary-search-tree","convert-sorted-array-to-binary-search-tree"],150,"Use the BST property to prune work."],
+["Lowest Common Ancestor and Tree Recursion",["LCA in a BST","LCA in a binary tree","Diameter","Balanced tree check","Returning multiple values from recursion"],["Find LCA in a BST iteratively","Find LCA in a general tree","Compute diameter in a single pass"],["lowest-common-ancestor-of-a-binary-search-tree","lowest-common-ancestor-of-a-binary-tree","diameter-of-binary-tree","balanced-binary-tree"],150,"Combine child results to answer parent questions."],
+["Heaps and Priority Queues",["Min-heap with heapq","Max-heap by negation","heapify in O(n)","push/pop in O(log n)","K-th largest"],["Use heapq to sort a list","K-th largest element with a heap of size k","Simulate stone smashing"],["kth-largest-element-in-a-stream","last-stone-weight","k-closest-points-to-origin"],150,"Use a heap when only the extremes matter."],
+["Top K Elements and Week 7 Review",["Top K frequent with a heap","Bucket sort alternative","Scheduling with a heap","Review of tree and heap templates"],["Top K frequent words","Task scheduler by greedy counting","Explain heap vs sort for Top K"],["top-k-frequent-words","task-scheduler","find-median-from-data-stream"],180,"Solve Top-K problems in O(n log k)."],
+/* ---------- WEEK 8 ---------- */
+["Graph Representations",["Adjacency list, matrix, edge list","Directed vs undirected","Weighted graphs","Building a graph from edges","Grids as graphs"],["Build an adjacency list from an edge list","Compute degree of every node","Convert a grid to neighbours using direction arrays"],["find-if-path-exists-in-graph","find-the-town-judge","number-of-provinces"],150,"Represent any graph problem in code."],
+["Breadth-First Search",["Queue and visited set","Level-by-level distance","Grid BFS in 4 directions","Multi-source BFS"],["BFS on an adjacency list","Shortest path in an unweighted graph","Spread rot through a grid"],["flood-fill","rotting-oranges","shortest-path-in-binary-matrix","01-matrix"],150,"Find shortest paths in unweighted graphs."],
+["Depth-First Search and Connected Components",["Recursive and iterative DFS","Counting components","Island problems","Cloning a graph"],["Count connected components","Compute the largest island area","Clone a graph with a hash map"],["number-of-islands","max-area-of-island","clone-graph","surrounded-regions"],150,"Traverse graphs and count components."],
+["Cycle Detection and Topological Sort",["Directed cycle detection with states","Undirected cycles with parent or union-find","Kahn's algorithm","DFS colours"],["Detect a cycle in a directed graph","Produce a course order with Kahn's algorithm","Find the redundant edge with union-find"],["course-schedule","course-schedule-ii","redundant-connection"],150,"Detect cycles and order dependencies."],
+["Shortest Path Introduction",["BFS for unweighted paths","Dijkstra with a heap","Complexity O(E log V)","Bellman-Ford (mention)"],["Implement Dijkstra on a small graph","Explain why Dijkstra fails with negative edges","Trace a run by hand"],["network-delay-time","cheapest-flights-within-k-stops","path-with-minimum-effort"],150,"Explain and implement Dijkstra (these problems are a stretch)."],
+["Greedy Algorithms",["Local choice and exchange argument","When greedy fails","Sort then scan","Jump and gas station problems"],["Assign cookies greedily","Jump game reachability","Partition a string into the most parts"],["assign-cookies","jump-game","jump-game-ii","gas-station","partition-labels"],150,"Justify a greedy choice."],
+["Interval Problems and Week 8 Review",["Sort by start time","Merging overlaps","Insert an interval","Minimum removals and arrows"],["Merge overlapping intervals","Insert a new interval into a sorted list","Minimum arrows to burst balloons"],["merge-intervals","insert-interval","non-overlapping-intervals","minimum-number-of-arrows-to-burst-balloons"],180,"Handle all interval problems with sort + scan."],
+/* ---------- WEEK 9 ---------- */
+["Dynamic Programming: Memoisation",["Overlapping subproblems","Optimal substructure","Top-down with functools.lru_cache","Defining the state"],["Fibonacci with lru_cache","Count paths to climb n stairs","Minimum cost to climb stairs"],["climbing-stairs","min-cost-climbing-stairs"],150,"Turn a recursion into memoised DP."],
+["Tabulation and 1D DP",["Bottom-up tables","Recurrence relations","Space optimisation to O(1)","House robber family"],["Tabulated Fibonacci with O(1) space","House robber with a dp array and then two variables","Delete and earn as house robber"],["house-robber","house-robber-ii","delete-and-earn"],150,"Write the recurrence before coding."],
+["Coin Change and Unbounded Knapsack",["Minimum coins","Counting ways","Unbounded choices","Loop order matters"],["Coin change minimum with tabulation","Coin change counting ways","Minimum number of perfect squares"],["coin-change","coin-change-ii","perfect-squares"],150,"Distinguish minimise-count from count-ways DP."],
+["Grid DP",["Unique paths","Obstacles","Minimum path sum","Triangle problems"],["Unique paths on an m x n grid","Minimum path sum","Triangle minimum path from bottom up"],["unique-paths","unique-paths-ii","minimum-path-sum","triangle"],150,"Fill 2D tables correctly."],
+["Longest Common Subsequence and LIS Introduction",["LCS table","LIS with O(n^2) DP","Edit distance introduction","Reconstructing the answer"],["Fill an LCS table by hand","LIS in O(n^2)","Edit distance on short words"],["longest-common-subsequence","longest-increasing-subsequence","edit-distance"],150,"Understand string DP tables (LCS is introductory exposure)."],
+["Subset Sum and Word Problems",["0/1 knapsack","Subset sum","Word break","Decode ways"],["Partition equal subset sum","Target sum as subset sum","Word break with a set and dp"],["partition-equal-subset-sum","target-sum","word-break","decode-ways"],150,"Spot subset-sum shaped problems."],
+["Month 2 Review and Checkpoint",["Pattern map: which technique for which problem","Redo five failed problems","Count Month 2 problems (target 40–50)","Timed mixed set"],["Write a one-page 'how to recognise the pattern' sheet","Solve 2 Mediums in 60 minutes","Update the tracker honestly"],["longest-palindromic-substring","palindromic-substrings","maximum-product-subarray","best-time-to-buy-and-sell-stock-with-cooldown"],180,"Month 2 checkpoint: comfortable with Medium-level problems."],
+/* ---------- WEEK 10 ---------- */
+["Operating Systems: Processes and Threads",["Process vs thread","Process control block","Context switching","Scheduling algorithms","User vs kernel mode","IPC"],["List processes and threads on your machine with psutil","Compare multiprocessing and threading in a small script","Draw a process state diagram"],["design-linked-list"],150,"Explain processes, threads and scheduling clearly."],
+["Memory Management",["Virtual memory","Paging and segmentation","Page faults","Stack vs heap","Python reference counting and GC","Memory leaks"],["Use sys.getsizeof and tracemalloc","Create and collect a reference cycle with gc","Explain what happens on a page fault"],["implement-trie-prefix-tree"],150,"Explain virtual memory and how Python manages memory."],
+["Multithreading in Python",["threading and the GIL","multiprocessing","I/O-bound vs CPU-bound","Thread pools","asyncio basics"],["Download simulation with ThreadPoolExecutor","CPU-bound work with multiprocessing","asyncio.gather with sleep"],["print-in-order"],150,"Choose threads, processes or asyncio for a workload."],
+["Race Conditions and Deadlocks",["Race conditions","Mutex and semaphore","Deadlock: the four Coffman conditions","Lock ordering","Producer-consumer"],["Reproduce a race with a shared counter and fix it with a Lock","Create a deadlock with two locks and fix it with ordering","Producer-consumer with queue.Queue"],["print-foobar-alternately"],150,"Reproduce and fix concurrency bugs."],
+["Networking I: HTTP and HTTPS",["Request/response cycle","Methods and status codes","Headers and cookies","HTTP/1.1 vs 2 vs 3","TLS handshake and certificates"],["Inspect headers with requests and curl -v","Write a tiny server with http.server","Explain what HTTPS protects and what it does not"],["encode-and-decode-tinyurl"],150,"Describe an HTTP request end to end."],
+["Networking II: TCP/IP and DNS",["OSI vs TCP/IP","TCP three-way handshake","Flow and congestion control","UDP","IP and subnets","DNS resolution","Ports and sockets"],["Write a socket echo server and client","Trace DNS with dig or nslookup","Explain what happens when you type google.com"],["design-browser-history"],150,"Explain TCP, UDP and DNS."],
+["Week 10 Review",["Rewrite notes on OS and networking as Q&A","Revisit weak CS topics","Redo two old problems"],["Answer 10 OS/network interview questions aloud","Draw the full request path from browser to server","Redo two earlier Medium problems"],["design-underground-system"],180,"Answer common OS and networking interview questions."],
+/* ---------- WEEK 11 ---------- */
+["PostgreSQL Fundamentals",["Data types, DDL and DML","Primary and foreign keys, unique, check","psql basics","Schema design","EXPLAIN"],["Create a schema for a URL shortener","Insert and query rows","Violate each constraint on purpose and read the errors"],["combine-two-tables","second-highest-salary"],150,"Design a small PostgreSQL schema."],
+["SQL Joins and Aggregation",["INNER, LEFT, RIGHT, FULL joins","GROUP BY and HAVING","Subqueries and CTEs","Window functions"],["Write each join type on two small tables","Top-N per group with a window function","Rewrite a subquery as a CTE"],["employees-earning-more-than-their-managers","duplicate-emails","department-highest-salary","rank-scores","consecutive-numbers"],150,"Write multi-table queries with confidence."],
+["Indexes",["B-tree index","Composite index column order","Covering index","Selectivity","EXPLAIN ANALYZE","Write cost of indexes"],["Create an index and compare EXPLAIN ANALYZE before and after","Test composite index order","Find a query where an index is not used"],["customers-who-never-order","delete-duplicate-emails","nth-highest-salary"],150,"Decide which index a query needs."],
+["Transactions, ACID and Normalisation",["ACID","Isolation levels and MVCC","Locks","1NF, 2NF, 3NF, BCNF","When to denormalise"],["Demonstrate non-repeatable read with two psql sessions","Normalise a messy orders table","Explain isolation levels using a bank transfer"],["game-play-analysis-i","rising-temperature"],150,"Explain ACID and isolation levels with examples."],
+["REST APIs, Authentication and Caching",["Resource design and HTTP methods","Idempotency and status codes","Pagination and versioning","JWT vs sessions","Hashing passwords","Cache-aside, TTL, invalidation"],["Design endpoints for the URL shortener (OpenAPI)","Implement JWT login in FastAPI","Cache-aside with a dict, then Redis"],["design-twitter"],150,"Design a clean REST API with auth and caching."],
+["Message Queues, Testing and Debugging",["Queue vs pub/sub","At-least-once delivery, retries, DLQ","Idempotent consumers","pytest, fixtures, parametrize, mocking","pdb and logging"],["Write pytest tests with parametrize","Build a worker consuming from queue.Queue","Debug a failing test with pdb"],["design-parking-system"],150,"Test and debug backend code systematically."],
+["Week 11 Review and Project Kick-off",["Review SQL and backend notes","Set up the URL shortener repository","Plan milestones for both projects"],["Initialise the FastAPI project with a virtualenv","Write the first failing test","Create the PostgreSQL schema migration"],["insert-delete-getrandom-o1"],180,"Start the backend project with a clear plan and tests."],
+/* ---------- WEEK 12 ---------- */
+["System Design: Scalability and Load Balancing",["Vertical vs horizontal scaling","Stateless services","Load balancing algorithms","Layer 4 vs layer 7","Health checks and CDNs","Latency numbers"],["Back-of-the-envelope estimate for 100M users","Draw a three-tier architecture","Simulate round-robin and least-connections"],["random-pick-with-weight"],150,"Explain how a system scales from 1 to 1M users."],
+["Database Replication and Partitioning",["Leader-follower replication","Sync vs async and replication lag","Sharding strategies","Consistent hashing","Hot partitions","CAP theorem","SQL vs NoSQL"],["Draw a leader-follower setup and failure scenario","Implement consistent hashing in Python","Choose shard keys for a URL shortener"],["design-authentication-manager"],150,"Choose a replication and sharding strategy and justify it."],
+["Caching Strategies and Distributed Systems Introduction",["Cache-aside, write-through, write-back","Eviction: LRU, LFU","Cache stampede","Raft/Paxos intro","Eventual consistency","Rate limiting"],["Implement an LRU cache","Implement a token-bucket rate limiter","List the failure modes of a cache"],["lru-cache","lfu-cache"],150,"Design caching and understand distributed-systems vocabulary (introductory)."],
+["Design a URL Shortener",["Requirements and estimates","API design","ID generation: base62 vs hash","Schema","301 vs 302 redirects","Caching and analytics","Scaling"],["Write a one-page design document","Draw the architecture diagram","Estimate storage and QPS"],["stock-price-fluctuation"],180,"Present a full URL shortener design in 35 minutes."],
+["Design a Notification System",["Push, email and SMS channels","Fan-out","Queues and workers","Retries, DLQ and idempotency","Templates and user preferences","Rate limiting and observability"],["Write requirements and API","Draw producer, queue and worker flow","Explain delivery guarantees"],["single-threaded-cpu"],180,"Design an asynchronous notification pipeline (introductory exposure)."],
+["Design a Chat Application",["WebSockets vs long polling","Message storage and ordering","Delivery receipts","Presence","Group chat fan-out","End-to-end encryption introduction"],["Sketch the message flow for 1:1 and group chat","Pick a storage model and justify it","Identify bottlenecks"],["task-scheduler"],180,"Reason about real-time system trade-offs (introductory exposure)."],
+["Mock Interviews, Behavioural Prep and Resume",["Timed coding mock (45 min)","System design mock (45 min)","Six STAR stories","Resume update","Review mock scorecards"],["Run one coding mock and score it","Run one design mock and score it","Write six STAR stories in the Interview tab"],["course-schedule","word-break"],210,"Complete first mocks and identify weaknesses."],
+/* ---------- FINAL SPRINT (days 85-90) ---------- */
+["Mock Coding 1: Arrays, Strings and Hash Maps",["Timed 45-minute round","Think aloud","State complexity","Test edge cases"],["Solve two problems under time","Record scorecard","Fix the weakest area"],["product-of-array-except-self","minimum-window-substring"],180,"Solve Medium problems independently under time."],
+["Mock Coding 2: Trees and Graphs",["Timed round","Choosing BFS vs DFS","Complexity discussion","Clean code"],["Solve two problems under time","Record scorecard","Review mistakes"],["binary-tree-maximum-path-sum","word-ladder","number-of-islands"],180,"Solve tree and graph problems under time (Hard problems are exposure)."],
+["Mock Coding 3: DP and Backtracking",["Timed round","Recurrence first","Pruning","Edge cases"],["Solve two problems under time","Record scorecard","Review mistakes"],["house-robber","partition-equal-subset-sum","word-search"],180,"Solve DP and backtracking problems under time."],
+["Project Day: Finish the Backend Project",["Complete tests","Write the README with design trade-offs","Add an architecture diagram","Clean the commit history"],["Reach 80%+ coverage on core logic","Document every endpoint","Deploy locally with Docker"],["trapping-rain-water","merge-k-sorted-lists"],210,"Have one substantial backend project you can discuss in depth."],
+["Behavioural, Resume and Application Strategy",["STAR stories review","Impact-focused resume bullets","Referrals","careers.google.com applications","Recruiter screen, interview loop, hiring committee, team match"],["Rewrite resume bullets with measurable impact","Rehearse each STAR story in under 2 minutes","Make a list of target roles and locations"],["sliding-window-maximum","largest-rectangle-in-histogram"],180,"Ready to apply with a strong resume and rehearsed stories."],
+["Final Review and the Next 90 Days",["Weakness report","Retrospective","Plan: continue 2 problems per day","Mock interviews with peers","Apply and iterate"],["Write a weakness report from the tracker","Plan the next 90 days","Book two mock interviews"],["find-median-from-data-stream"],180,"A clear, honest picture of readiness and a plan for what comes next."]
+];
+
+/* Python tracker sections: [title, [topics]] */
+const PY_RAW=[
+["Python Fundamentals",["Variables and data types","Operators and control flow","Functions, arguments and scope","Lists, tuples, sets, dictionaries","Strings and f-strings","File I/O and exception handling","Modules, packages, venv and pip"]],
+["Advanced Python",["Comprehensions and generators","Iterators and iterables","Decorators","Context managers","Closures","*args, **kwargs and unpacking","Type hints","collections, itertools, functools","asyncio basics","GIL and concurrency model"]],
+["Object-Oriented Programming",["Classes and objects","Inheritance and MRO","Encapsulation and properties","Polymorphism and duck typing","Dunder methods","Dataclasses","Composition over inheritance","SOLID principles"]],
+["Data Structures",["Arrays and lists","Hash tables","Stacks","Queues and deques","Linked lists","Trees and BSTs","Heaps","Graphs","Tries"]],
+["Algorithms",["Binary search","Sorting algorithms","Two pointers and sliding window","Recursion and backtracking","BFS and DFS","Greedy","Dynamic programming","Dijkstra and topological sort"]],
+["Time Complexity",["Big-O, Omega and Theta","Best, average and worst case","Amortised analysis","Costs of Python built-ins","Recurrences and the Master theorem (intro)"]],
+["Space Complexity",["Auxiliary vs total space","Recursion stack space","In-place algorithms","Time-space trade-offs"]],
+["Debugging",["Reading tracebacks","print and logging","pdb and breakpoint()","Reproduce with a failing test","Edge-case checklist","Profiling with timeit and cProfile"]],
+["Clean Code",["PEP 8 and linting","Meaningful names","Small single-purpose functions","Docstrings and useful comments","Unit tests with pytest","Refactoring and removing duplication"]]
+];
+
+/* CS tracker sections: [title, ["topic|description"]] */
+const CS_RAW=[
+["Operating Systems",["Processes and threads|Differences, states, PCB and context switching.","CPU scheduling|FCFS, SJF, round robin, priority and multilevel queues.","Virtual memory and paging|Address translation, TLB, page faults and replacement.","File systems|Inodes, directories, journaling and buffering.","Synchronisation|Mutexes, semaphores, monitors and condition variables.","Deadlocks|Coffman conditions, prevention, avoidance and detection.","I/O and interrupts|Drivers, DMA, interrupts and polling."]],
+["DBMS",["ER modelling|Entities, relationships and cardinality.","Keys and constraints|Primary, foreign, candidate and unique keys.","Normalisation|1NF to BCNF and when to denormalise.","Transactions and ACID|Atomicity, consistency, isolation and durability.","Isolation levels and MVCC|Dirty, non-repeatable and phantom reads.","Indexing|B-trees, hash indexes and covering indexes.","Query execution|Planner, EXPLAIN and join algorithms.","SQL vs NoSQL|Trade-offs and typical use cases."]],
+["SQL",["SELECT, WHERE and ORDER BY|Filtering, sorting and limiting.","JOINs|Inner, outer and self joins.","GROUP BY and HAVING|Aggregations and filters on groups.","Subqueries and CTEs|Correlated subqueries and WITH.","Window functions|ROW_NUMBER, RANK, LAG and running totals.","DDL and constraints|CREATE, ALTER, defaults and checks.","Query optimisation|Reading plans and fixing slow queries."]],
+["Computer Networks",["OSI and TCP/IP models|Layers and responsibilities.","IP, subnets and NAT|Addressing and routing basics.","TCP vs UDP|Reliability, ordering and congestion control.","HTTP versions|HTTP/1.1, HTTP/2 and HTTP/3.","HTTPS and TLS|Handshake, certificates and trust.","DNS|Resolution, caching and records.","Proxies, CDNs and load balancers|Where each fits in a request path.","WebSockets|Persistent bidirectional connections."]],
+["Concurrency",["Threads vs processes|Memory model and isolation.","Race conditions|Shared state and atomicity.","Locks and semaphores|Mutual exclusion and signalling.","Deadlock and livelock|Detection and avoidance.","Producer-consumer|Bounded buffers and queues.","Python GIL|What it limits and what it does not.","async/await|Event loop and cooperative multitasking.","Thread and process pools|Executors and sizing."]],
+["Distributed Systems",["Scalability|Vertical vs horizontal, stateless design.","CAP and PACELC|Consistency vs availability trade-offs.","Replication|Leader-follower, multi-leader and quorum.","Sharding and consistent hashing|Partitioning data and rebalancing.","Consensus|Raft and Paxos overview.","Eventual consistency|Conflict resolution and read repair.","Message queues and streaming|Kafka and RabbitMQ concepts.","Rate limiting and idempotency|Token bucket and idempotency keys."]],
+["Software Engineering",["Git workflow|Branching, rebasing and pull requests.","Testing pyramid|Unit, integration and end-to-end tests.","Code review|Giving and receiving feedback.","CI/CD|Automated builds, tests and deploys.","SOLID and design patterns|Common patterns and when to avoid them.","API design|Contracts, versioning and errors.","Observability|Logs, metrics and traces.","Documentation|READMEs and design docs."]]
+];
+
+const PROJECTS=[
+ {id:"p1",t:"Project 1: URL Shortener",d:"A service that shortens URLs and redirects visitors. Practise API design, persistence, caching and testing.",stack:["FastAPI","PostgreSQL","REST APIs","URL hashing","Redirect handling","Caching","Testing"],ms:["Set up the FastAPI project, virtualenv and linting","Design the PostgreSQL schema (urls, clicks) with migrations","POST /shorten with validation and error responses","Short-code generation (base62 or hash) with collision handling","GET /{code} redirect and a documented 301 vs 302 decision","Add caching (cache-aside) with TTL and invalidation","Click analytics and optional link expiry","Rate limiting and structured logging","Unit and integration tests with pytest","README with architecture diagram, trade-offs and run instructions"]},
+ {id:"p2",t:"Project 2: Notification Service",d:"An asynchronous service that accepts notification requests and delivers them reliably. Practise queues, retries and persistence.",stack:["Python","REST API","Background processing","Queue concepts","Database persistence","Error handling"],ms:["Define the API contract (create notification, get status)","Persist notifications and templates in PostgreSQL","Publish notifications to a queue (Redis, RabbitMQ or Python queue)","Background worker with retries and exponential backoff","Channel adapters for email, SMS and push (mocked)","Idempotency keys and de-duplication","Dead-letter handling and error logging","Tests for worker, retries and failure paths","README with architecture diagram and delivery guarantees"]}
+];
+
+const CODING_STEPS=[
+["Understand the question","Restate the problem, inputs, outputs and constraints in your own words."],
+["Ask clarifying questions","Input size, duplicates, negative values, empty input, sorted or not, memory limits."],
+["Explain the brute-force solution","State it first with time and space complexity, even if it is slow."],
+["Improve the solution","Identify the pattern: hash map, two pointers, sliding window, heap, BFS/DFS, DP."],
+["Analyse complexity","Give time and space complexity and explain any trade-offs."],
+["Write clean code","Clear names, small helper functions, no dead code, talk while typing."],
+["Test edge cases","Empty input, single element, duplicates, negatives, large values. Trace one example by hand."]
+];
+const BEHAV=[
+["Leadership","Tell me about a time you led a project or initiative, with or without formal authority."],
+["Collaboration","Describe working with another team or a difficult teammate to deliver something."],
+["Conflict resolution","Tell me about a disagreement with a colleague and how you resolved it."],
+["Handling failures","Describe a project that failed or missed its goal. What did you do?"],
+["Taking ownership","Tell me about a time you took responsibility for something outside your role."],
+["Learning from mistakes","Describe a mistake you made and what you changed afterwards."]
+];
+const SYSD_STEPS=[
+["Requirements","Functional and non-functional requirements, scope and assumptions."],
+["Capacity estimates","Users, QPS, storage and bandwidth."],
+["APIs","Endpoints, request/response, authentication, pagination, idempotency."],
+["Database schema","Entities, relationships, SQL vs NoSQL, indexes."],
+["Architecture","Components, data flow, sync vs async, queues."],
+["Scalability","Load balancing, caching, sharding and replication."],
+["Bottlenecks and failure modes","Single points of failure, hot keys, retries and backpressure."],
+["Trade-offs","State the alternatives you considered and why you chose one."]
+];
+const SCORE_CRITERIA=["Problem understanding","Communication","Technical depth / solution","Code quality or design clarity","Testing and trade-offs"];
+
+const RESOURCES=[
+["Practice","LeetCode","https://leetcode.com/","Main platform for coding practice."],
+["Practice","LeetCode Problem Set","https://leetcode.com/problemset/","Browse and filter all problems."],
+["Practice","NeetCode","https://neetcode.io/","Curated roadmaps and explanations."],
+["Practice","PostgreSQL Exercises","https://pgexercises.com/","Interactive SQL practice."],
+["Google","Google Careers","https://www.google.com/about/careers/applications/","Official job search and application page."],
+["Google","Google Tech Dev Guide","https://techdevguide.withgoogle.com/","Google's own guide for interview preparation."],
+["Python","Python Official Documentation","https://docs.python.org/3/","The authoritative reference."],
+["Python","The Python Tutorial","https://docs.python.org/3/tutorial/","Official tutorial."],
+["Python","Python Tutor","https://pythontutor.com/","Visualise code execution step by step."],
+["Courses","MIT OCW 6.006 Introduction to Algorithms","https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/","Lectures and notes on algorithms."],
+["Courses","MIT OCW 6.0001 Intro to CS and Programming in Python","https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/","Python and computational thinking."],
+["Courses","CS50x","https://cs50.harvard.edu/x/","Harvard's introduction to computer science."],
+["Courses","CS50P","https://cs50.harvard.edu/python/","Harvard's introduction to programming with Python."],
+["SQL","PostgreSQL Tutorial","https://www.postgresql.org/docs/current/tutorial.html","Official PostgreSQL tutorial."],
+["SQL","SQLBolt","https://sqlbolt.com/","Short interactive SQL lessons."],
+["SQL","Mode SQL Tutorial","https://mode.com/sql-tutorial/","SQL from basics to advanced analytics."],
+["System design","System Design Primer","https://github.com/donnemartin/system-design-primer","The most popular system design study guide on GitHub."],
+["System design","FastAPI Documentation","https://fastapi.tiangolo.com/","For the backend projects."],
+["CS theory","Operating Systems: Three Easy Pieces","https://pages.cs.wisc.edu/~remzi/OSTEP/","Free OS textbook."],
+["CS theory","Beej's Guide to Network Programming","https://beej.us/guide/bgnet/","Sockets and networking basics."],
+["Reference","Big-O Cheat Sheet","https://www.bigocheatsheet.com/","Complexity of common data structures and algorithms."],
+["Reference","VisuAlgo","https://visualgo.net/","Animated algorithm visualisations."],
+["Interview","Tech Interview Handbook","https://www.techinterviewhandbook.org/","Interview prep guides and resume advice."],
+["Interview","Pramp","https://www.pramp.com/","Free peer mock interviews."],
+["Interview","interviewing.io","https://interviewing.io/","Mock interviews with engineers."]
+];
+/*DATA-END*/
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+const ST=['Not Started','Attempted','Solved with Hint','Solved Independently'];
+const DIFF={E:'Easy',M:'Medium',H:'Hard'};
+const weekOf=d=>d>84?13:Math.ceil(d/7);
+const monthOf=d=>d<=28?1:d<=63?2:3;
+const weekRange=w=>w===13?[85,90]:[(w-1)*7+1,w*7];
+const LS_KEY='missionGoogle.v1';
+
+function todayStr(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function parseDate(s){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?new Date(+m[1],+m[2]-1,+m[3]):null}
+function fmtDate(d){return d?d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'}):''}
+
+/* Build problem lookup */
+const PROBLEMS=new Map();
+PROBLEM_LINES.trim().split('\n').forEach(l=>{
+  const p=l.split('|');
+  PROBLEMS.set(p[0],{slug:p[0],name:p[1],diff:DIFF[p[2]],topic:p[3],url:'https://leetcode.com/problems/'+p[0]+'/',days:[]});
+});
+DAYS.forEach((d,i)=>d[3].forEach(s=>{const p=PROBLEMS.get(s);if(p){if(!p.days.includes(i+1))p.days.push(i+1)}else console.warn('Unknown problem slug:',s)}));
+
+/* Build checklist sections */
+function buildSections(raw,prefix,withDesc){
+  return raw.map((s,si)=>({id:prefix+si,title:s[0],items:s[1].map((t,i)=>{const [a,b]=withDesc?t.split('|'):[t,''];return {id:prefix+si+'-'+i,t:a,d:b||''}})}));
+}
+const PY=buildSections(PY_RAW,'py',false);
+const CS=buildSections(CS_RAW,'cs',true);
+
+/* =====================================================================
+   STATE  (persisted in localStorage)
+   ===================================================================== */
+let storageOK=true;
+function defaultState(){return{v:1,startDate:todayStr(),dailyMinutes:150,days:{},topics:{},problems:{},custom:[],milestones:{},weekly:{},interview:{},stories:{},projNotes:{},scorecards:[],activity:{}}}
+function sanitize(o){
+  const d=defaultState();
+  if(!o||typeof o!=='object')return d;
+  Object.keys(d).forEach(k=>{
+    const v=o[k];
+    if(v===undefined||v===null)return;
+    if(typeof v!==typeof d[k]||Array.isArray(v)!==Array.isArray(d[k]))return;
+    d[k]=v;
+  });
+  if(!parseDate(d.startDate))d.startDate=todayStr();
+  d.dailyMinutes=clamp(Math.round(+d.dailyMinutes)||150,60,300);
+  return d;
+}
+function load(){
+  try{const raw=localStorage.getItem(LS_KEY);return raw?sanitize(JSON.parse(raw)):defaultState()}
+  catch(e){storageOK=false;return defaultState()}
+}
+let state=load();
+function save(){
+  try{localStorage.setItem(LS_KEY,JSON.stringify(state));storageOK=true}
+  catch(e){if(storageOK){storageOK=false;toast('Browser storage is blocked, so progress cannot be saved. Use Export to keep a copy.')}}
+}
+/* record real activity (used for the streak) */
+function touch(){state.activity[todayStr()]=1}
+
+/* =====================================================================
+   DERIVED VALUES
+   ===================================================================== */
+function rawDay(){const s=parseDate(state.startDate);if(!s)return 1;return Math.max(1,Math.round((parseDate(todayStr())-s)/864e5)+1)}
+function curDay(){return Math.min(90,rawDay())}
+function dayDate(n){const s=parseDate(state.startDate);if(!s)return null;s.setDate(s.getDate()+n-1);return s}
+function streak(){
+  const d=parseDate(todayStr());let n=0;
+  if(!state.activity[todayStr(d)])d.setDate(d.getDate()-1);
+  while(state.activity[todayStr(d)]){n++;d.setDate(d.getDate()-1)}
+  return n;
+}
+function allProblems(){
+  const custom=state.custom.map(c=>({slug:c.id,name:c.name,url:c.url,diff:c.diff,topic:c.topic,days:[],custom:true}));
+  const base=Array.from(PROBLEMS.values()).sort((a,b)=>(a.days[0]||999)-(b.days[0]||999));
+  return base.concat(custom);
+}
+const getP=slug=>state.problems[slug]||{status:0,date:'',time:'',notes:''};
+function setP(slug,patch){state.problems[slug]=Object.assign({status:0,date:'',time:'',notes:''},state.problems[slug],patch)}
+const isSolved=slug=>getP(slug).status>=2;
+function doneDays(){let n=0;for(let i=1;i<=90;i++)if((state.days[i]||{}).done)n++;return n}
+function pctOfItems(items,bucket){if(!items.length)return 0;return Math.round(items.filter(i=>state[bucket][i.id]).length/items.length*100)}
+function stats(){
+  const all=allProblems();
+  const solved=all.filter(p=>isSolved(p.slug)).length;
+  const indep=all.filter(p=>getP(p.slug).status===3).length;
+  const cd=curDay(),w=weekOf(cd);
+  const dd=doneDays();
+  return{done:dd,overall:Math.round(dd/90*100),solved,indep,cd,w,phase:PHASES.find(p=>p.weeks.includes(w)),week:WEEKS[w-1],remaining:Math.max(0,90-(rawDay()-1)),streak:streak(),tracked:all.length};
+}
+
+/* =====================================================================
+   UI HELPERS
+   ===================================================================== */
+let toastTimer;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200)}
+function barRow(label,pct,title){return `<div class="bar-row"><span class="bl" title="${esc(title||label)}">${esc(label)}</span><div class="progress" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div><span class="bv">${pct}%</span></div>`}
+function ring(pct){const r=54,c=2*Math.PI*r,l=c*pct/100;return `<svg class="ring" viewBox="0 0 132 132" role="img" aria-label="Overall completion ${pct} percent"><circle cx="66" cy="66" r="${r}" fill="none" style="stroke:var(--border2)" stroke-width="10"/><circle cx="66" cy="66" r="${r}" fill="none" style="stroke:var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${l} ${c-l}" transform="rotate(-90 66 66)"/><text class="t" x="66" y="70" text-anchor="middle">${pct}%</text><text class="u" x="66" y="88" text-anchor="middle">COMPLETE</text></svg>`}
+function donut(parts,total){
+  const r=52,c=2*Math.PI*r;let off=0;
+  const segs=parts.map(p=>{const len=total?p.v/total*c:0;const s=`<circle r="${r}" cx="70" cy="70" fill="none" style="stroke:${p.c}" stroke-width="16" stroke-dasharray="${len} ${c-len}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"/>`;off+=len;return s}).join('');
+  return `<svg class="donut" viewBox="0 0 140 140" role="img" aria-label="Solved problems by difficulty"><circle r="${r}" cx="70" cy="70" fill="none" style="stroke:var(--border2)" stroke-width="16"/>${segs}<text class="d-n" x="70" y="72" text-anchor="middle">${total}</text><text class="d-s" x="70" y="90" text-anchor="middle">SOLVED</text></svg>`;
+}
+function diffPill(d){return `<span class="pill d-${d}">${d}</span>`}
+function statusSelect(slug,cls){const cur=getP(slug).status;return `<select class="${cls}" data-slug="${esc(slug)}" aria-label="Status for ${esc((PROBLEMS.get(slug)||{}).name||slug)}">${ST.map((s,i)=>`<option value="${i}"${i===cur?' selected':''}>${s}</option>`).join('')}</select>`}
+
+/* =====================================================================
+   SHELL (sidebar / topbar)
+   ===================================================================== */
+function refreshShell(){
+  const s=stats();
+  $('#sbPct').textContent=s.overall+'%';
+  $('#sbBar').style.width=s.overall+'%';
+  $('#sbBarWrap').setAttribute('aria-valuenow',s.overall);
+  $('#sbDay').textContent=`${s.done} of 90 days complete`;
+  $('#chipDay').textContent=`Day ${s.cd} · Week ${s.w}`;
+  $('#chipStreak').textContent=`Streak: ${s.streak} day${s.streak===1?'':'s'}`;
+}
+
+/* =====================================================================
+   VIEW: DASHBOARD
+   ===================================================================== */
+function renderDashboard(){
+  const s=stats(),d=DAYS[s.cd-1],ds=state.days[s.cd]||{};
+  const all=allProblems();
+  const bd={Easy:0,Medium:0,Hard:0},bt={Easy:0,Medium:0,Hard:0};
+  all.forEach(p=>{bt[p.diff]++;if(isSolved(p.slug))bd[p.diff]++});
+  const cells=[];
+  for(let i=1;i<=90;i++){
+    const done=(state.days[i]||{}).done;
+    cells.push(`<button class="cell${done?' done':''}${i===s.cd?' today':''}" data-open-day="${i}" aria-label="Day ${i}: ${esc(DAYS[i-1][0])}${done?' (completed)':''}" title="Day ${i}: ${esc(DAYS[i-1][0])}">${i}</button>`);
+  }
+  const weekRows=WEEKS.map(w=>{const [a,b]=weekRange(w.n);let n=0;for(let i=a;i<=b;i++)if((state.days[i]||{}).done)n++;return barRow('Week '+w.n,Math.round(n/(b-a+1)*100),`Week ${w.n}: ${w.t} (${n}/${b-a+1} days)`)}).join('');
+  const topicRows=PY.concat(CS).map(sec=>barRow(sec.title,pctOfItems(sec.items,'topics'))).join('')
+    +barRow('Projects',Math.round(PROJECTS.reduce((a,p)=>a+p.ms.filter((_,i)=>state.milestones[p.id+'-'+i]).length,0)/PROJECTS.reduce((a,p)=>a+p.ms.length,0)*100))
+    +barRow('Interview checklists',(()=>{const ids=checklistIds();return ids.length?Math.round(ids.filter(i=>state.interview[i]).length/ids.length*100):0})());
+  const done=s.cd<=90&&rawDay()<=90;
+  $('#dashBody').innerHTML=`
+  <section class="hero">
+    <div><p class="eyebrow">PROJECT</p><h1>MISSION GOOGLE</h1><p class="tagline">90 DAYS TO SOFTWARE ENGINEERING EXCELLENCE</p></div>
+    ${ring(s.overall)}
+  </section>
+  <div class="stat-grid">
+    <div class="stat"><div class="l">Overall completion</div><div class="v">${s.overall}%</div><div class="s">completed days out of 90</div></div>
+    <div class="stat"><div class="l">Completed study days</div><div class="v">${s.done}<span class="muted" style="font-size:15px"> / 90</span></div><div class="s">${90-s.done} still to do</div></div>
+    <div class="stat"><div class="l">Problems solved</div><div class="v">${s.solved}</div><div class="s">${s.indep} independently · ${s.tracked} tracked</div></div>
+    <div class="stat"><div class="l">Days remaining</div><div class="v">${s.remaining}</div><div class="s">${rawDay()>90?'The 90 days are over':'from your start date'}</div></div>
+    <div class="stat"><div class="l">Study streak</div><div class="v">${s.streak}</div><div class="s">based on recorded activity</div></div>
+    <div class="stat"><div class="l">Current phase</div><div class="v sm">${esc(s.phase.t.replace(/^Month \d – /,''))}</div><div class="s">Month ${s.phase.m} of 3</div></div>
+    <div class="stat"><div class="l">Current weekly topic</div><div class="v sm">Week ${s.w}: ${esc(s.week.t)}</div><div class="s">Day ${s.cd}</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head"><h3>${done?'Today':'Next up'}: Day ${s.cd} – ${esc(d[0])}</h3><span class="tag">${monthOf(s.cd)===1?'Month 1':monthOf(s.cd)===2?'Month 2':'Month 3'}</span></div>
+      <ul class="bullets">${d[1].slice(0,4).map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
+      <p class="small muted" style="margin:10px 0">Outcome: ${esc(d[5])}</p>
+      <div class="row">
+        <label class="row" style="gap:8px"><input type="checkbox" id="dashDone" data-day="${s.cd}"${ds.done?' checked':''}> Mark Day ${s.cd} complete</label>
+        <button class="btn primary sm" data-open-day="${s.cd}">Open in planner</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Focus for week ${s.w}</h3>
+      <label class="f">What do you want to achieve this week?
+        <textarea id="weeklyFocus" data-week="${s.w}" placeholder="e.g. Finish all two-pointer problems without hints">${esc(state.weekly[s.w]||'')}</textarea>
+      </label>
+      <p class="small muted" style="margin-top:8px">Saved automatically.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Daily study completion</h3>
+    <div class="cells">${cells.join('')}</div>
+    <p class="small muted" style="margin-top:10px">Green = completed. Outlined = current day. Click a day to open it.</p>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Weekly progress</h3>${weekRows}</div>
+    <div class="card"><h3>Topic-wise completion</h3>${topicRows}</div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Problem difficulty distribution</h3>
+    <div class="donut-wrap">
+      ${donut([{v:bd.Easy,c:'var(--good)'},{v:bd.Medium,c:'var(--warn)'},{v:bd.Hard,c:'var(--bad)'}],s.solved)}
+      <ul class="legend">
+        <li><b style="background:var(--good)"></b>Easy: ${bd.Easy} solved of ${bt.Easy}</li>
+        <li><b style="background:var(--warn)"></b>Medium: ${bd.Medium} solved of ${bt.Medium}</li>
+        <li><b style="background:var(--bad)"></b>Hard: ${bd.Hard} solved of ${bt.Hard}</li>
+      </ul>
+    </div>
+  </div>`;
+}
+
+/* =====================================================================
+   VIEW: ROADMAP
+   ===================================================================== */
+function renderRoadmap(){
+  const body=PHASES.map(ph=>`
+   <div class="phase">
+     <h3>${esc(ph.t)}</h3>
+     <p class="muted small">Goal: ${ph.goal.map(esc).join(' ')}</p>
+     <div class="grid3">${ph.weeks.map(wn=>{
+       const w=WEEKS[wn-1],[a,b]=weekRange(wn);let n=0;for(let i=a;i<=b;i++)if((state.days[i]||{}).done)n++;
+       const pct=Math.round(n/(b-a+1)*100);
+       return `<div class="card week"><h4>Week ${wn}: ${esc(w.t)}</h4><p class="small muted">Days ${a}–${b}</p>
+         <ul>${w.ess.map(x=>`<li><span class="tag ess">Essential</span>${esc(x)}</li>`).join('')}${w.intro.map(x=>`<li><span class="tag intro">Intro</span>${esc(x)}</li>`).join('')}</ul>
+         ${barRow(n+'/'+(b-a+1)+' days',pct)}
+         <button class="btn sm" data-open-week="${wn}">Open week in planner</button></div>`}).join('')}</div>
+   </div>`).join('');
+  $('#roadBody').innerHTML=`<div class="callout"><b>Be realistic.</b> This is an intensive foundation and interview-readiness sprint, not a guarantee of being hired at Google. <span class="tag ess">Essential</span> topics must be solid enough to solve and explain independently. <span class="tag intro">Intro</span> topics are first exposure, to be revisited after the 90 days.</div>${body}`;
+}
+
+/* =====================================================================
+   VIEW: PLANNER
+   ===================================================================== */
+const ui={month:'all',week:'all',status:'all',q:'',openDay:null,expandAll:false};
+function dayMatches(i){
+  const n=i+1,d=DAYS[i],ds=state.days[n]||{};
+  if(ui.month!=='all'&&monthOf(n)!==+ui.month)return false;
+  if(ui.week!=='all'&&weekOf(n)!==+ui.week)return false;
+  if(ui.status==='done'&&!ds.done)return false;
+  if(ui.status==='todo'&&ds.done)return false;
+  if(ui.q){
+    const hay=[('day '+n),d[0],d[1].join(' '),d[2].join(' '),d[5],d[3].map(s=>(PROBLEMS.get(s)||{}).name||s).join(' '),ds.notes||''].join(' ').toLowerCase();
+    if(!ui.q.toLowerCase().split(/\s+/).every(t=>hay.includes(t)))return false;
+  }
+  return true;
+}
+function dayCard(i){
+  const n=i+1,d=DAYS[i],ds=state.days[n]||{},exs=ds.ex||{};
+  const exDone=d[2].filter((_,k)=>exs[k]).length;
+  const dt=dayDate(n),est=Math.max(15,Math.round(d[4]*state.dailyMinutes/150/5)*5);
+  const isToday=n===curDay()&&rawDay()<=90;
+  const open=ui.expandAll||ui.openDay===n;
+  return `<article class="day${ds.done?' done':''}${isToday?' today':''}" id="day-${n}" data-day="${n}"><details${open?' open':''}>
+  <summary>
+    <input type="checkbox" class="day-check" data-day="${n}" aria-label="Mark day ${n} complete"${ds.done?' checked':''}>
+    <span class="dn">DAY ${String(n).padStart(2,'0')}</span>
+    <span class="dt">${esc(d[0])}</span>
+    <span class="meta"><span class="tag">Week ${weekOf(n)}</span><span class="tag">Month ${monthOf(n)}</span>${dt?`<span class="tag">${esc(fmtDate(dt))}</span>`:''}${isToday?'<span class="tag now">Today</span>':''}<span class="tag ex-count">${exDone}/${d[2].length} exercises</span><span class="tag">~${est} min</span></span>
+  </summary>
+  <div class="day-body">
+    <div>
+      <h4>Concepts</h4><ul class="bullets">${d[1].map(c=>`<li>${esc(c)}</li>`).join('')}</ul>
+      <h4>Practical coding exercises</h4>
+      <ul class="checks">${d[2].map((e,k)=>`<li><label class="check"><input type="checkbox" class="ex-check" data-day="${n}" data-i="${k}"${exs[k]?' checked':''}><div><span class="tt">${esc(e)}</span></div></label></li>`).join('')}</ul>
+    </div>
+    <div>
+      <h4>LeetCode</h4>
+      <ul>${d[3].map(s=>{const p=PROBLEMS.get(s);return p?`<li class="lc-item"><span><a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(p.name)}</a> ${diffPill(p.diff)}</span>${statusSelect(s,'lc-status')}</li>`:''}).join('')}</ul>
+      <h4>Expected outcome</h4><p class="outcome">${esc(d[5])}</p>
+      <h4>Personal notes</h4>
+      <textarea class="day-note" data-day="${n}" aria-label="Notes for day ${n}" placeholder="What did you learn? What was hard?">${esc(ds.notes||'')}</textarea>
+    </div>
+  </div></details></article>`;
+}
+function renderPlanner(){
+  const idx=DAYS.map((_,i)=>i).filter(dayMatches);
+  $('#pCount').textContent=`Showing ${idx.length} of 90 days`;
+  $('#plannerList').innerHTML=idx.length?idx.map(dayCard).join(''):'<div class="empty">No days match your filters.</div>';
+  $('#pExpand').textContent=ui.expandAll?'Collapse all':'Expand all';
+  if(ui.openDay){const el=$('#day-'+ui.openDay);if(el){setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),30)}ui.openDay=null}
+}
+function openDay(n){
+  ui.month='all';ui.week='all';ui.status='all';ui.q='';ui.openDay=n;
+  syncPlannerControls();
+  if(location.hash==='#/planner')renderPlanner();else location.hash='#/planner';
+}
+function syncPlannerControls(){$('#pMonth').value=ui.month;$('#pWeek').value=ui.week;$('#pStatus').value=ui.status;$('#pq').value=ui.q;$('#gSearch').value=ui.q}
+
+/* =====================================================================
+   VIEW: LEETCODE
+   ===================================================================== */
+const lui={q:'',diff:'all',topic:'all',status:'all'};
+function lcFiltered(){
+  return allProblems().filter(p=>{
+    const g=getP(p.slug);
+    if(lui.diff!=='all'&&p.diff!==lui.diff)return false;
+    if(lui.topic!=='all'&&p.topic!==lui.topic)return false;
+    if(lui.status!=='all'&&g.status!==+lui.status)return false;
+    if(lui.q&&!(p.name+' '+p.topic+' '+g.notes).toLowerCase().includes(lui.q.toLowerCase()))return false;
+    return true;
+  });
+}
+function lcSummary(){
+  const all=allProblems(),by=d=>all.filter(p=>p.diff===d),sol=a=>a.filter(p=>isSolved(p.slug)).length;
+  $('#lcChips').innerHTML=[`Tracked: ${all.length}`,`Solved: ${sol(all)}`,`Independently: ${all.filter(p=>getP(p.slug).status===3).length}`,`Easy: ${sol(by('Easy'))}/${by('Easy').length}`,`Medium: ${sol(by('Medium'))}/${by('Medium').length}`,`Hard: ${sol(by('Hard'))}/${by('Hard').length}`].map(t=>`<span class="chip">${t}</span>`).join('');
+}
+function renderLC(){
+  const topics=Array.from(new Set(allProblems().map(p=>p.topic))).sort();
+  const cur=lui.topic;
+  $('#lTopic').innerHTML='<option value="all">All topics</option>'+topics.map(t=>`<option${t===cur?' selected':''}>${esc(t)}</option>`).join('');
+  const rows=lcFiltered();
+  $('#lCount').textContent=`Showing ${rows.length} problems`;
+  $('#lcBody').innerHTML=rows.length?rows.map(p=>{
+    const g=getP(p.slug);
+    return `<tr class="s${g.status}" data-slug="${esc(p.slug)}">
+      <td><a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(p.name)}</a>${p.custom?` <button class="link del-custom" data-slug="${esc(p.slug)}">Remove</button>`:''}</td>
+      <td>${diffPill(p.diff)}</td><td>${esc(p.topic)}</td>
+      <td>${p.days.length?p.days.map(d=>`<button class="link" data-open-day="${d}">Day ${d}</button>`).join(', '):'–'}</td>
+      <td>${statusSelect(p.slug,'lc-status')}</td>
+      <td><input type="date" class="lc-date" aria-label="Attempt date for ${esc(p.name)}" value="${esc(g.date)}"></td>
+      <td><input type="number" min="0" class="lc-time" aria-label="Time taken in minutes for ${esc(p.name)}" value="${esc(g.time)}"></td>
+      <td><input type="text" class="lc-notes" aria-label="Notes for ${esc(p.name)}" value="${esc(g.notes)}" placeholder="Approach, mistakes…"></td></tr>`}).join(''):'<tr><td colspan="8"><div class="empty">No problems match your filters.</div></td></tr>';
+  lcSummary();
+}
+/* shared status change (planner dropdown or tracker dropdown) */
+function changeStatus(slug,val){
+  setP(slug,{status:val});
+  if(val>0){const g=getP(slug);if(!g.date)setP(slug,{date:todayStr()});touch()}
+  save();refreshShell();
+  /* keep every visible control for this problem in sync */
+  $$('select.lc-status').forEach(sel=>{if(sel.dataset.slug===slug)sel.value=val});
+  const row=$(`#lcBody tr[data-slug="${CSS.escape(slug)}"]`);
+  if(row){row.className='s'+val;const di=$('.lc-date',row);if(di)di.value=getP(slug).date}
+  if(!$('#view-leetcode').hidden)lcSummary();
+}
+
+/* =====================================================================
+   GENERIC CHECKLIST CARDS (python, cs, projects, interview)
+   ===================================================================== */
+function checklistCard(title,items,bucket,extra){
+  const done=items.filter(i=>state[bucket][i.id]).length,pct=Math.round(done/items.length*100);
+  return `<div class="card" data-card>
+    <div class="card-head"><h3>${esc(title)}</h3><span class="tag card-count">${done}/${items.length}</span></div>
+    <div class="progress" role="progressbar" aria-label="${esc(title)} progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div>
+    <ul class="checks" style="margin-top:8px">${items.map(it=>`<li><label class="check"><input type="checkbox" class="chk" data-bucket="${bucket}" data-id="${esc(it.id)}"${state[bucket][it.id]?' checked':''}><div><span class="tt">${esc(it.t)}</span>${it.d?`<span class="dd" style="display:block">${esc(it.d)}</span>`:''}</div></label></li>`).join('')}</ul>
+    ${extra||''}</div>`;
+}
+function updateCard(card){
+  const boxes=$$('.chk',card),done=boxes.filter(b=>b.checked).length,pct=boxes.length?Math.round(done/boxes.length*100):0;
+  const bar=$('.progress',card);bar.setAttribute('aria-valuenow',pct);$('i',bar).style.width=pct+'%';
+  $('.card-count',card).textContent=done+'/'+boxes.length;
+}
+function renderPython(){$('#pyBody').innerHTML=PY.map(s=>checklistCard(s.title,s.items,'topics')).join('')}
+function renderCS(){$('#csBody').innerHTML=CS.map(s=>checklistCard(s.title,s.items,'topics')).join('')}
+function renderProjects(){
+  $('#projBody').innerHTML=PROJECTS.map(p=>{
+    const items=p.ms.map((m,i)=>({id:p.id+'-'+i,t:m,d:''}));
+    const extra=`<h4 class="small muted" style="margin:14px 0 6px">Stack and concepts</h4><div class="row" style="gap:6px">${p.stack.map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>
+      <label class="f" style="margin-top:14px">Project notes<textarea class="proj-note" data-id="${p.id}" placeholder="Decisions, trade-offs, repo link…">${esc(state.projNotes[p.id]||'')}</textarea></label>`;
+    return `<div>${`<p class="muted small" style="margin-bottom:8px">${esc(p.d)}</p>`}${checklistCard(p.t,items,'milestones',extra)}</div>`;
+  }).join('');
+}
+function checklistIds(){return CODING_STEPS.map((_,i)=>'cod'+i).concat(BEHAV.map((_,i)=>'beh'+i),SYSD_STEPS.map((_,i)=>'sys'+i))}
+
+/* =====================================================================
+   VIEW: INTERVIEW
+   ===================================================================== */
+function renderInterview(){
+  const cod=CODING_STEPS.map((s,i)=>({id:'cod'+i,t:s[0],d:s[1]}));
+  const sys=SYSD_STEPS.map((s,i)=>({id:'sys'+i,t:s[0],d:s[1]}));
+  const beh=BEHAV.map((s,i)=>({id:'beh'+i,t:s[0]+': story prepared',d:s[1]}));
+  const stories=BEHAV.map((s,i)=>`<label class="f" style="margin-top:10px">${esc(s[0])}: STAR notes<textarea class="story" data-id="beh${i}" placeholder="Situation, Task, Action, Result">${esc(state.stories['beh'+i]||'')}</textarea></label>`).join('');
+  const sc=state.scorecards.slice().reverse();
+  const avgAll=sc.length?(sc.reduce((a,x)=>a+avg(x.scores),0)/sc.length).toFixed(1):'–';
+  $('#intBody').innerHTML=`
+  <div class="grid2" style="margin-top:0">
+    ${checklistCard('Coding interview framework',cod,'interview')}
+    ${checklistCard('System design framework',sys,'interview')}
+  </div>
+  <div class="grid2">
+    ${checklistCard('Behavioural interview',beh,'interview',stories)}
+    <div class="card">
+      <h3>Mock interview scorecard</h3>
+      <form id="scoreForm">
+        <div class="form-row">
+          <label class="f">Date<input type="date" id="scDate" value="${todayStr()}" required></label>
+          <label class="f">Type<select id="scType"><option>Coding</option><option>System design</option><option>Behavioural</option></select></label>
+          <label class="f">Problem or topic<input type="text" id="scTopic" placeholder="e.g. LRU Cache" required></label>
+        </div>
+        <div class="rate">${SCORE_CRITERIA.map((c,i)=>`<label class="f">${esc(c)} (1–5)<select class="sc-r" data-i="${i}">${[1,2,3,4,5].map(n=>`<option${n===3?' selected':''}>${n}</option>`).join('')}</select></label>`).join('')}</div>
+        <label class="f">Feedback and next steps<textarea id="scNotes" placeholder="What went well? What to improve?"></textarea></label>
+        <div class="row" style="margin-top:10px"><button class="btn primary" type="submit">Save scorecard</button><span class="small muted">1 = needs work, 5 = excellent</span></div>
+      </form>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="card-head"><h3>Scorecard history</h3><span class="tag">Average: ${avgAll}</span></div>
+    ${sc.length?`<div class="tw"><table style="min-width:640px"><thead><tr><th>Date</th><th>Type</th><th>Topic</th><th>Average</th><th>Notes</th><th></th></tr></thead><tbody>${sc.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.type)}</td><td>${esc(x.topic)}</td><td>${avg(x.scores).toFixed(1)}</td><td>${esc(x.notes)}</td><td><button class="link del-score" data-id="${esc(x.id)}">Delete</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No mock interviews recorded yet.</div>'}
+  </div>`;
+}
+const avg=a=>a.reduce((x,y)=>x+y,0)/(a.length||1);
+
+/* =====================================================================
+   VIEW: RESOURCES / DATA
+   ===================================================================== */
+function renderResources(){
+  const groups={};RESOURCES.forEach(r=>(groups[r[0]]=groups[r[0]]||[]).push(r));
+  $('#resBody').innerHTML=Object.keys(groups).map(g=>`<div class="card res"><h3>${esc(g)}</h3>${groups[g].map(r=>`<a href="${esc(r[2])}" target="_blank" rel="noopener noreferrer"><b>${esc(r[1])}</b><span>${esc(r[3])}</span></a>`).join('')}</div>`).join('');
+}
+function renderData(){
+  $('#setStart').value=state.startDate;
+  $('#setMin').value=state.dailyMinutes;
+  $('#setMinLbl').textContent=(state.dailyMinutes/60).toFixed(2).replace(/\.?0+$/,'')+' h/day';
+  $('#storeMsg').textContent=storageOK?'Progress is saved automatically in this browser (localStorage). It is not shared between devices or browsers.':'Browser storage is unavailable, so progress will be lost when you close this tab. Use Export.';
+}
+
+/* =====================================================================
+   EXPORT / IMPORT / RESET
+   ===================================================================== */
+function exportData(){
+  const payload={app:'mission-google',version:1,exportedAt:new Date().toISOString(),state};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mission-google-progress-'+todayStr()+'.json';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  toast('Progress exported.');
+}
+function importData(file){
+  const fr=new FileReader();
+  fr.onload=()=>{
+    try{
+      const o=JSON.parse(fr.result);
+      if(!o||o.app!=='mission-google'||typeof o.state!=='object')throw new Error('bad');
+      if(!confirm('Importing replaces your current progress with the file contents. Continue?'))return;
+      state=sanitize(o.state);save();route();refreshShell();toast('Progress imported.');
+    }catch(e){toast('That file is not a valid Mission Google export.')}
+  };
+  fr.onerror=()=>toast('Could not read the file.');
+  fr.readAsText(file);
+}
+function resetData(){
+  if(!confirm('Reset ALL progress? This deletes completed days, problems, notes and scorecards from this browser. Export first if you want a backup.'))return;
+  if(!confirm('Are you sure? This cannot be undone.'))return;
+  try{localStorage.removeItem(LS_KEY)}catch(e){}
+  state=defaultState();save();ui.month=ui.week=ui.status='all';ui.q='';syncPlannerControls();route();refreshShell();toast('All progress has been reset.');
+}
+
+/* =====================================================================
+   ROUTER
+   ===================================================================== */
+const VIEWS=['dashboard','roadmap','planner','leetcode','python','cs','projects','interview','resources','data'];
+const RENDER={dashboard:renderDashboard,roadmap:renderRoadmap,planner:renderPlanner,leetcode:renderLC,python:renderPython,cs:renderCS,projects:renderProjects,interview:renderInterview,resources:renderResources,data:renderData};
+function route(){
+  let v=location.hash.replace(/^#\/?/,'')||'dashboard';
+  if(!VIEWS.includes(v))v='dashboard';
+  VIEWS.forEach(x=>{$('#view-'+x).hidden=x!==v});
+  $$('.nav a').forEach(a=>{if(a.dataset.view===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  RENDER[v]();
+  closeSidebar();
+  refreshShell();
+  if(v!=='planner')window.scrollTo(0,0);
+}
+function openSidebar(){$('#sidebar').classList.add('open');$('#scrim').classList.add('show');$('#menuBtn').setAttribute('aria-expanded','true')}
+function closeSidebar(){$('#sidebar').classList.remove('open');$('#scrim').classList.remove('show');$('#menuBtn').setAttribute('aria-expanded','false')}
+
+/* =====================================================================
+   EVENTS (delegated, bound once)
+   ===================================================================== */
+function bind(){
+  $('#menuBtn').addEventListener('click',()=>$('#sidebar').classList.contains('open')?closeSidebar():openSidebar());
+  $('#scrim').addEventListener('click',closeSidebar);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar()});
+  window.addEventListener('hashchange',route);
+
+  /* generic "open day / open week" buttons anywhere */
+  document.addEventListener('click',e=>{
+    const od=e.target.closest('[data-open-day]');
+    if(od){openDay(+od.dataset.openDay);return}
+    const ow=e.target.closest('[data-open-week]');
+    if(ow){ui.month='all';ui.week=ow.dataset.openWeek;ui.status='all';ui.q='';ui.expandAll=false;syncPlannerControls();if(location.hash==='#/planner')renderPlanner();else location.hash='#/planner'}
+  });
+
+  /* ---- dashboard ---- */
+  $('#dashBody').addEventListener('change',e=>{
+    if(e.target.id==='dashDone')setDayDone(+e.target.dataset.day,e.target.checked,true);
+  });
+  $('#dashBody').addEventListener('input',e=>{
+    if(e.target.id==='weeklyFocus'){state.weekly[e.target.dataset.week]=e.target.value;save()}
+  });
+
+  /* ---- planner ---- */
+  const pl=$('#plannerList');
+  pl.addEventListener('change',e=>{
+    const t=e.target;
+    if(t.classList.contains('day-check')){setDayDone(+t.dataset.day,t.checked,false)}
+    else if(t.classList.contains('ex-check')){
+      const n=+t.dataset.day,ds=state.days[n]=state.days[n]||{};ds.ex=ds.ex||{};
+      if(t.checked){ds.ex[t.dataset.i]=true;touch()}else delete ds.ex[t.dataset.i];
+      save();refreshShell();
+      const card=t.closest('.day'),total=DAYS[n-1][2].length;
+      $('.ex-count',card).textContent=Object.keys(ds.ex).length+'/'+total+' exercises';
+    }
+    else if(t.classList.contains('lc-status')){changeStatus(t.dataset.slug,+t.value)}
+  });
+  pl.addEventListener('input',e=>{
+    if(e.target.classList.contains('day-note')){const n=+e.target.dataset.day;(state.days[n]=state.days[n]||{}).notes=e.target.value;save()}
+  });
+  $('#pq').addEventListener('input',e=>{ui.q=e.target.value.trim();$('#gSearch').value=e.target.value;renderPlanner()});
+  $('#pMonth').addEventListener('change',e=>{ui.month=e.target.value;renderPlanner()});
+  $('#pWeek').addEventListener('change',e=>{ui.week=e.target.value;renderPlanner()});
+  $('#pStatus').addEventListener('change',e=>{ui.status=e.target.value;renderPlanner()});
+  $('#pExpand').addEventListener('click',()=>{ui.expandAll=!ui.expandAll;renderPlanner()});
+  $('#jumpToday').addEventListener('click',()=>{ui.month='all';ui.week='all';ui.status='all';ui.q='';syncPlannerControls();openDay(curDay())});
+  /* global search: sends the query to the planner */
+  $('#gSearch').addEventListener('input',e=>{
+    ui.q=e.target.value.trim();$('#pq').value=e.target.value;
+    if(location.hash!=='#/planner')location.hash='#/planner';else renderPlanner();
+    $('#gSearch').focus();
+  });
+
+  /* ---- leetcode ---- */
+  const lb=$('#lcBody');
+  lb.addEventListener('change',e=>{
+    const t=e.target,tr=t.closest('tr');if(!tr)return;const slug=tr.dataset.slug;
+    if(t.classList.contains('lc-status'))changeStatus(slug,+t.value);
+    else if(t.classList.contains('lc-date')){setP(slug,{date:t.value});save()}
+  });
+  lb.addEventListener('input',e=>{
+    const t=e.target,tr=t.closest('tr');if(!tr)return;const slug=tr.dataset.slug;
+    if(t.classList.contains('lc-time')){setP(slug,{time:t.value});save()}
+    else if(t.classList.contains('lc-notes')){setP(slug,{notes:t.value});save()}
+  });
+  lb.addEventListener('click',e=>{
+    const b=e.target.closest('.del-custom');if(!b)return;
+    if(!confirm('Remove this custom problem?'))return;
+    state.custom=state.custom.filter(c=>c.id!==b.dataset.slug);delete state.problems[b.dataset.slug];save();renderLC();toast('Problem removed.');
+  });
+  $('#lq').addEventListener('input',e=>{lui.q=e.target.value.trim();renderLC()});
+  $('#lDiff').addEventListener('change',e=>{lui.diff=e.target.value;renderLC()});
+  $('#lTopic').addEventListener('change',e=>{lui.topic=e.target.value;renderLC()});
+  $('#lStatus').addEventListener('change',e=>{lui.status=e.target.value;renderLC()});
+  $('#addProb').addEventListener('submit',e=>{
+    e.preventDefault();
+    const name=$('#apName').value.trim(),url=$('#apUrl').value.trim(),topic=$('#apTopic').value.trim();
+    if(!/^https?:\/\//i.test(url)){toast('Enter a full URL starting with http:// or https://');return}
+    state.custom.push({id:'c'+Date.now().toString(36),name,url,diff:$('#apDiff').value,topic});
+    save();e.target.reset();renderLC();toast('Problem added.');
+  });
+
+  /* ---- checklists (python, cs, projects, interview) ---- */
+  ['#pyBody','#csBody','#projBody','#intBody'].forEach(sel=>{
+    const root=$(sel);
+    root.addEventListener('change',e=>{
+      const t=e.target;
+      if(t.classList.contains('chk')){
+        const b=state[t.dataset.bucket];
+        if(t.checked){b[t.dataset.id]=true;touch()}else delete b[t.dataset.id];
+        save();updateCard(t.closest('[data-card]'));refreshShell();
+      }
+    });
+    root.addEventListener('input',e=>{
+      const t=e.target;
+      if(t.classList.contains('proj-note')){state.projNotes[t.dataset.id]=t.value;save()}
+      else if(t.classList.contains('story')){state.stories[t.dataset.id]=t.value;save()}
+    });
+  });
+  $('#intBody').addEventListener('submit',e=>{
+    if(e.target.id!=='scoreForm')return;
+    e.preventDefault();
+    state.scorecards.push({id:'s'+Date.now().toString(36),date:$('#scDate').value,type:$('#scType').value,topic:$('#scTopic').value.trim(),scores:$$('.sc-r').map(s=>+s.value),notes:$('#scNotes').value.trim()});
+    touch();save();renderInterview();refreshShell();toast('Scorecard saved.');
+  });
+  $('#intBody').addEventListener('click',e=>{
+    const b=e.target.closest('.del-score');if(!b)return;
+    if(!confirm('Delete this scorecard?'))return;
+    state.scorecards=state.scorecards.filter(x=>x.id!==b.dataset.id);save();renderInterview();
+  });
+
+  /* ---- data & settings ---- */
+  $('#setStart').addEventListener('change',e=>{if(parseDate(e.target.value)){state.startDate=e.target.value;save();refreshShell();toast('Start date updated.')}});
+  $('#setMin').addEventListener('input',e=>{state.dailyMinutes=+e.target.value;save();renderData()});
+  $('#btnExport').addEventListener('click',exportData);
+  $('#btnImport').addEventListener('click',()=>$('#importFile').click());
+  $('#importFile').addEventListener('change',e=>{const f=e.target.files[0];if(f)importData(f);e.target.value=''});
+  $('#btnReset').addEventListener('click',resetData);
+
+  /* keep several tabs consistent */
+  window.addEventListener('storage',e=>{if(e.key===LS_KEY){state=load();route()}});
+}
+
+/* mark a day complete / incomplete (manual only, never automatic) */
+function setDayDone(n,val,fromDash){
+  const ds=state.days[n]=state.days[n]||{};
+  ds.done=!!val;if(val)touch();
+  save();refreshShell();
+  const card=$('#day-'+n);
+  if(card){card.classList.toggle('done',!!val);const c=$('.day-check',card);if(c)c.checked=!!val}
+  if(fromDash)renderDashboard();
+}
+
+/* =====================================================================
+   INIT
+   ===================================================================== */
+function init(){
+  /* planner week dropdown */
+  $('#pWeek').innerHTML='<option value="all">All weeks</option>'+WEEKS.map(w=>`<option value="${w.n}">Week ${w.n}: ${esc(w.t)}</option>`).join('');
+  bind();
+  if(!storageOK)toast('Browser storage is blocked, so progress cannot be saved. Use Export to keep a copy.');
+  route();
+}
+init();
+})();
+</script>
+</body>
+</html>
